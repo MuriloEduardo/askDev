@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-md bg-light navbar-light box-sh-1 pt-md-0 pb-md-0">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsPerguntas" aria-controls="navbarsPerguntas" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsPerguntas">
+      <ul class="navbar-nav mr-auto navbar-firstlink-nopadding-left">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
+        </li>
+        <!-- <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link" [routerLink]="['/perguntas', 'devs']">Encontre Dev's</a>
+        </li> -->
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="btn btn-success" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<section class="mt-5 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-9">
+        <div *ngIf="perguntas$ | async; let perguntas; else loading">
+          <div *ngFor="let pergunta of perguntas">
+            <div class="card mb-3 box-sh-1" *ngIf="(pergunta.data.user | async)?.uid !== user.uid">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-9">
+                    <a [routerLink]="['/perguntas', pergunta.id, pergunta.data.titulo]">
+                      <h4>{{ pergunta.data.titulo }}</h4>
+                    </a>
+                    <h6>{{ pergunta.data.categoria }}</h6>
+                    <small><strong>Propostas:</strong> <span *ngIf="pergunta.data.propostas | async; let propostas; else loading">{{ propostas?.length }}</span></small>
+                    <small><strong>Criado Em:</strong> {{ pergunta.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+                    <p class="mt-3">{{ pergunta.data.body }}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <a class="btn btn-primary btn-block" [routerLink]="['/perguntas', pergunta.id, pergunta.data.titulo]">Fazer Proposta</a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <a *ngIf="pergunta.data.user | async as user" class="card" [routerLink]="['/users', user.uid]">
+                      <div class="p-2 text-truncate box-sh-1">
+                        <img [src]="user.photoURL" class="rounded mr-1" width="28" height="28" [alt]="user.displayName" [title]="user.displayName">
+                        <small>{{ user.displayName }}</small>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="perguntas.length === 0">Sem resultados, tente limpar os filtros</div>
+        </div>
+        <ng-template #loading>
+          <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>

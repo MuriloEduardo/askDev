@@ -1,0 +1,29 @@
+<section class="mt-5 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-9">
+        <div *ngIf="perguntas$ | async; let perguntas; else loading">
+          <div class="card" *ngFor="let pergunta of perguntas">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <a [routerLink]="['/atividades', 'propostas', pergunta.id]">
+                    <h4>{{ pergunta.data.titulo }}</h4>
+                  </a>
+                  <small><strong>Propostas:</strong> <span *ngIf="pergunta.data.propostas | async; let propostas; else loading">{{ propostas?.length }}</span></small>
+                  <small><strong>Criado Em:</strong> {{ pergunta.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="perguntas.length === 0">Sem resultados :(</div>
+        </div>
+        <ng-template #loading>
+          <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>

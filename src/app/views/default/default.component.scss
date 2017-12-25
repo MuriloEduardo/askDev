@@ -1,0 +1,7 @@
+.dropdown-toggle::after {
+  display: none;
+}
+
+.input-group-btn.show.dropdown .btn:last-child {
+  border-bottom-right-radius: 0;
+}

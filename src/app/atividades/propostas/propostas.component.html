@@ -1,0 +1,50 @@
+<section class="mt-5 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div *ngIf="propostas$ | async; let propostas; else loading">
+          <div class="card" *ngFor="let proposta of propostas">
+            <div class="card-body">
+              <div class="row" *ngIf="proposta.data.user | async as user">
+                <div class="col-md-1">
+                  <a [routerLink]="['/users', user.uid]">
+                    <img [src]="user.photoURL" class="rounded img-fluid" [alt]="user.displayName" [title]="user.displayName">
+                  </a>
+                </div>
+                <div class="col-md-11">
+                  <h3>{{ user.displayName }}</h3>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-11 offset-md-1">
+                  <p>{{ proposta.data.body }}</p>
+                  <small><strong>Criado Em:</strong> {{ proposta.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-11 offset-md-1">
+                  <a class="btn btn-success" [routerLink]="['/atividades']">Aceitar Proposta</a>
+                  <a class="btn btn-link text-muted" [routerLink]="['/atividades']">Ver Proposta</a>
+                  <a class="btn btn-link text-danger" (click)="delete(proposta.id)">Remover</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-body text-center" *ngIf="propostas.length === 0">
+            <h4 class="display-3 text-muted">
+              Sem Resultados<br>
+              <i class="fa fa-frown-o" aria-hidden="true"></i>
+            </h4>
+            <a [routerLink]="['/atividades', 'ajudado']">Voltar</a>
+          </div>
+        </div>
+        <ng-template #loading>
+          <div class="text-center">
+            <i class="fa fa-circle-o-notch text-muted fa-spin fa-3x fa-fw"></i>
+            <span class="sr-only">Carregando...</span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>

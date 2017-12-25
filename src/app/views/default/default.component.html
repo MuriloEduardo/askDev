@@ -1,0 +1,161 @@
+<nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark pt-md-0 pb-md-0">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/']">AskDev</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsPrimary" aria-controls="navbarsPrimary" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsPrimary">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link" [routerLink]="['/perguntas', 'criar']">Peça Ajuda</a>
+        </li>
+        <!--
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li> -->
+        <!-- <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
+
+          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" >Criar Pergunta</a>
+            <a class="dropdown-item" [routerLinkActive]="['active']" [routerLink]="['/perguntas', 'devs']">Encontre Dev's</a>
+          </div>
+        </li> -->
+        <!-- <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
+          <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle></a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/perguntas']">Encontre Perguntas</a>
+          </div>
+        </li> -->
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['/perguntas']">Ajudar Alguém</a>
+        </li>
+        <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
+          <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Minhas Atividades</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/atividades']">Como Ajudante</a>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/atividades', 'ajudado']">Como Ajudado</a>
+          </div>
+        </li>
+        <!-- <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
+          <a class="nav-link dropdown-toggle" [routerLink]="['/trabalhos']" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Ganhe Dinheiro</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/trabalhos']">Encontre Perguntas</a>
+          </div>
+        </li> -->
+      </ul>
+      <form>
+          <div class="input-group">
+            <input type="text" class="form-control border-white">
+            <div class="input-group-btn" ngbDropdown>
+              <button ngbDropdownToggle type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Perguntas <i class="fa fa-angle-down" aria-hidden="true"></i>
+              </button>
+              <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Dev's</a>
+              </div>
+              <button type="button" class="btn btn-default">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+      </form>
+      <ul class="navbar-nav">
+        <div *ngIf="auth.user | async; then authenticated else guest"></div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<main role="main">
+  <router-outlet></router-outlet>
+</main>
+<footer class="pt-5 pb-5 mainfooter bg-dark text-white" role="contentinfo">
+  <div class="footer-middle">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-sm-6">
+          <!--Column1-->
+          <div class="footer-pad">
+            <h4>Address</h4>
+            <address>
+              <ul class="list-unstyled">
+                <li>
+                  City Hall<br>
+                  212  Street<br>
+                  Lawoma<br>
+                  735<br>
+                </li>
+                <li>
+                  Phone: 0
+                </li>
+              </ul>
+            </address>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <!--Column1-->
+          <div class="footer-pad">
+            <h4>Popular Services</h4>
+            <ul class="list-unstyled">
+              <li><a href="#"></a></li>
+              <li><a href="#">Payment Center</a></li>
+              <li><a href="#">Contact Directory</a></li>
+              <li><a href="#">Forms</a></li>
+              <li><a href="#">News and Updates</a></li>
+              <li><a href="#">FAQs</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <!--Column1-->
+          <div class="footer-pad">
+            <h4>Website Information</h4>
+            <ul class="list-unstyled">
+              <li><a href="#">Website Tutorial</a></li>
+              <li><a href="#">Accessibility</a></li>
+              <li><a href="#">Disclaimer</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Webmaster</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <!--Column1-->
+          <div class="footer-pad">
+            <h4>Popular Departments</h4>
+            <ul class="list-unstyled">
+              <li><a href="#">Parks and Recreation</a></li>
+              <li><a href="#">Public Works</a></li>
+              <li><a href="#">Police Department</a></li>
+              <li><a href="#">Fire</a></li>
+              <li><a href="#">Mayor and City Council</a></li>
+              <li>
+                <a href="#"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <hr>
+      <p class="text-xs-center">&copy; Copyright 2016 - City of USA.  All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<ng-template #guest>
+  <li class="nav-item">
+    <a class="nav-link" [routerLink]="['/auth']">Entrar</a>
+  </li>
+</ng-template>
+
+<ng-template #authenticated>
+  <li class="nav-item" *ngIf="auth.user | async as user">
+    <a [routerLink]="['/user']">
+      <img [src]="user.photoURL" class="rounded ml-3" width="38" height="38" [alt]="user.displayName" [title]="user.displayName">
+    </a>
+  </li>
+</ng-template>
