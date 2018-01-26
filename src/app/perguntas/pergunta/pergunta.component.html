@@ -1,51 +1,54 @@
-<section class="mt-5 mb-5" *ngIf="pergunta | async as _pergunta">
+<section class="mt-5 mb-5" *ngIf="pergunta | async as _pergunta; else loading">
   <div class="container">
     <div class="row">
-      <div class="col-md-1 pr-0">
-        <a class="btn btn-primary mt-1" [routerLink]="['/perguntas']">
-          <i class="fa fa-angle-left" aria-hidden="true"></i>
-        </a>
-      </div>
-      <div class="col-md-11 pl-md-0">
-        <h1 class="mt-0">{{ _pergunta.titulo }}</h1>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-1" *ngIf="inputPerguntaId">
+            <a class="btn btn-secondary btn-block" [routerLink]="['/perguntas', perguntaId, _pergunta.titulo]">
+              <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div class="col-md-11">
+            <h1 class="mb-5">{{ _pergunta.titulo }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-9">
+                    <h6><strong>Propostas:</strong> <span *ngIf="propostas | async; let propostas; else loading">{{ propostas?.length }}</span></h6>
+                  </div>
+                  <div class="col-md-3" *ngIf="!inputPerguntaId">
+                    <a class="btn btn-success btn-block" [routerLink]="['/mensagens', 'proposta', perguntaId, _pergunta.titulo]">Fazer Proposta</a>
+                  </div>
+                </div>
+                <hr>
+                <h4>Descrição</h4>
+                <p>{{ _pergunta.body }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card" *ngIf="user | async as _user; else loading">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <img [src]="_user.photoURL" class="img-fluid rounded" [alt]="_user.displayName" [title]="_user.displayName">
+                  </div>
+                  <div class="col-md-8 pl-md-0">
+                    <h6 class="card-title text-truncate">{{ _user.displayName }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row mt-3">
-      <div class="col-md-9">
-        <small><strong>Propostas:</strong> {{ (propostas | async)?.length }}</small>
-      </div>
-    </div>
-    <hr>
-    <p>{{ _pergunta.body }}</p>
   </div>
 </section>
-<section class="mt-5 mb-5">
-  <div class="container">
-    <form role="form" [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-3">
-      <h5>Descreva sua proposta:</h5>
-      <div class="form-group mt-3">
-        <textarea class="form-control form-control-lg" rows="6" formControlName="body"></textarea>
-      </div>
-      <h5 class="mt-5">Anexar arquivos</h5>
-      <input type="file" name="" id="">
-      <h5 class="mt-5">Sua proposta</h5>
-      <div class="form-group row">
-        <div class="col-md-4">
-          <label for="valorLiquido">Valor líquido a cobrar</label>
-          <input type="text" class="form-control form-control-lg" id="valorLiquido" formControlName="valorLiquido">
-        </div>
-        <div class="col-md-4">
-          <label for="comissao">Comissão AskDev</label>
-          <input type="text" class="form-control form-control-lg" id="comissao" formControlName="comissao">
-        </div>
-        <div class="col-md-4">
-          <label for="total">Total</label>
-          <input type="text" class="form-control form-control-lg" id="total" formControlName="total">
-        </div>
-      </div>
-      <div class="form-group">
-        <input type="submit" class="btn btn-success btn-lg" value="Publicar Proposta">
-      </div>
-    </form>
-  </div>
-</section>
+<ng-template #loading>
+  <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+</ng-template>

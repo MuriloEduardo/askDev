@@ -9,7 +9,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
-                  <a [routerLink]="['/atividades', 'propostas', pergunta.id]">
+                  <a [routerLink]="['/propostas', pergunta.id]">
                     <h4>{{ pergunta.data.titulo }}</h4>
                   </a>
                   <small><strong>Propostas:</strong> <span *ngIf="pergunta.data.propostas | async; let propostas; else loading">{{ propostas?.length }}</span></small>

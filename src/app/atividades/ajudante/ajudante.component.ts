@@ -1,6 +1,6 @@
-import { User } from './../../user/user';
+import { User } from './../../_interfaces/user';
 import { AuthService } from './../../auth/auth.service';
-import { Pergunta } from './../../perguntas/pergunta/pergunta';
+import { Pergunta } from './../../_interfaces/pergunta';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';

@@ -6,34 +6,34 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarsPrimary">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" [routerLinkActive]="['active']">
+        <!-- <li class="nav-item" [routerLinkActive]="['active']">
           <a class="nav-link" [routerLink]="['/perguntas', 'criar']">Peça Ajuda</a>
-        </li>
+        </li> -->
         <!--
         <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled</a>
         </li> -->
-        <!-- <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
-
+        <li class="nav-item dropdown dropdown-hover" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" ngbDropdown>
+          <a class="nav-link dropdown-toggle" id="dropdown01" [routerLink]="['/perguntas']" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Perguntas</a>
           <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
-            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" >Criar Pergunta</a>
-            <a class="dropdown-item" [routerLinkActive]="['active']" [routerLink]="['/perguntas', 'devs']">Encontre Dev's</a>
+            <a class="dropdown-item" [routerLinkActive]="['active']" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/perguntas']">Encontre Perguntas</a>
           </div>
-        </li> -->
+        </li>
         <!-- <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
           <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle></a>
           <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
             <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/perguntas']">Encontre Perguntas</a>
           </div>
         </li> -->
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <!-- <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a class="nav-link" [routerLink]="['/perguntas']">Ajudar Alguém</a>
-        </li>
+        </li> -->
         <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
           <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Minhas Atividades</a>
           <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
-            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/atividades']">Como Ajudante</a>
-            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/atividades', 'ajudado']">Como Ajudado</a>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/atividades']">Minhas Respostas</a>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/atividades', 'perguntas']">Minhas Perguntas</a>
           </div>
         </li>
         <!-- <li class="nav-item dropdown dropdown-hover" [routerLinkActive]="['active']" ngbDropdown>
@@ -153,6 +153,11 @@
 </ng-template>
 
 <ng-template #authenticated>
+  <li class="nav-item">
+    <a class="nav-link" [routerLink]="['/mensagens']">
+      <i class="fa fa-comments-o" aria-hidden="true"></i>
+    </a>
+  </li>
   <li class="nav-item" *ngIf="auth.user | async as user">
     <a [routerLink]="['/user']">
       <img [src]="user.photoURL" class="rounded ml-3" width="38" height="38" [alt]="user.displayName" [title]="user.displayName">

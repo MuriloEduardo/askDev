@@ -1,20 +1,24 @@
 import { ActivatedRoute } from '@angular/router';
-import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';
-import { Proposta } from './../../perguntas/proposta/proposta';
+import { Proposta } from './../../_interfaces/proposta';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './../../auth/auth.service';
+import { Observable } from 'rxjs/Observable';
+import { Pergunta } from '../../_interfaces/pergunta';
 
 @Component({
-  selector: 'app-propostas',
-  templateUrl: './propostas.component.html',
-  styleUrls: ['./propostas.component.scss']
+  selector: 'app-listar',
+  templateUrl: './listar.component.html',
+  styleUrls: ['./listar.component.scss']
 })
-export class PropostasComponent implements OnInit {
+export class ListarComponent implements OnInit {
 
   perguntaId: string;
   propostasCol: AngularFirestoreCollection<Proposta>;
   propostas$: any;
+  perguntaDoc: AngularFirestoreDocument<Pergunta>;
+  pergunta: Observable<Pergunta>;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,6 +26,9 @@ export class PropostasComponent implements OnInit {
 ) {
 
     this.perguntaId = this.route.snapshot.params['id'];
+
+    this.perguntaDoc = this.afs.doc('perguntas/' + this.perguntaId);
+    this.pergunta = this.perguntaDoc.valueChanges();
 
     this.propostasCol = this.afs.collection('propostas', ref => ref.where('perguntaId', '==', this.perguntaId));
 

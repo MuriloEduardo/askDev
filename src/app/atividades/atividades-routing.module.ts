@@ -1,5 +1,4 @@
-import { PropostasComponent } from './propostas/propostas.component';
-import { AjudadoComponent } from './ajudado/ajudado.component';
+import { PerguntasComponent } from './perguntas/perguntas.component';
 import { AjudanteComponent } from './ajudante/ajudante.component';
 import { AtividadesComponent } from './atividades.component';
 import { NgModule } from '@angular/core';
@@ -15,16 +14,12 @@ const routes: Routes = [
         redirectTo: 'ajudante',
       },
       {
-        path: 'propostas/:id',
-        component: PropostasComponent
-      },
-      {
         path: 'ajudante',
         component: AjudanteComponent
       },
       {
-        path: 'ajudado',
-        component: AjudadoComponent
+        path: 'perguntas',
+        component: PerguntasComponent
       }
     ]
   }

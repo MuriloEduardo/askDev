@@ -7,7 +7,6 @@ import { CriarComponent } from './criar/criar.component';
 import { DevsComponent } from './devs/devs.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ListarComponent } from './listar/listar.component';
-import { PropostaComponent } from './proposta/proposta.component';
 import { PerguntaComponent } from './pergunta/pergunta.component';
 
 @NgModule({
@@ -21,7 +20,9 @@ import { PerguntaComponent } from './pergunta/pergunta.component';
     CriarComponent,
     DevsComponent,
     ListarComponent,
-    PropostaComponent,
+    PerguntaComponent
+  ],
+  exports: [
     PerguntaComponent
   ]
 })

@@ -1,4 +1,4 @@
-import { User } from './../user/user';
+import { User } from './../_interfaces/user';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
@@ -43,6 +43,8 @@ export class AuthService {
       photoURL: user.photoURL
     };
     return userRef.set(data);
+  }
+  private updateOnConnect() {
   }
   signOut() {
     this.afAuth.auth.signOut().then(() => {

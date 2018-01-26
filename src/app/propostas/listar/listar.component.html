@@ -1,4 +1,18 @@
-<section class="mt-5 mb-5">
+<section class="mt-5 mb-5" *ngIf="pergunta | async as _pergunta">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1 pr-0">
+        <a class="btn btn-primary mt-1" [routerLink]="['/atividades', 'perguntas']">
+          <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </a>
+      </div>
+      <div class="col-md-11 pl-md-0">
+        <h1 class="mt-0">{{ _pergunta.titulo }}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="mb-5">
   <div class="container">
     <div class="row">
       <div class="col-md-12">

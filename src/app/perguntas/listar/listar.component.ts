@@ -1,9 +1,10 @@
-import { User } from './../../user/user';
+import { User } from './../../_interfaces/user';
 import { AuthService } from './../../auth/auth.service';
-import { Pergunta } from './../pergunta/pergunta';
+import { Pergunta } from './../../_interfaces/pergunta';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-listar',
@@ -12,6 +13,7 @@ import 'rxjs/add/operator/map';
 })
 export class ListarComponent implements OnInit {
 
+  subscription: Subscription;
   perguntasCol: AngularFirestoreCollection<Pergunta>;
   perguntas$: any;
   user: User;
@@ -21,7 +23,7 @@ export class ListarComponent implements OnInit {
     private auth: AuthService
   ) {
 
-    this.auth.user.subscribe(user => {
+    this.subscription = this.auth.user.subscribe(user => {
       this.user = user;
     });
 
@@ -43,6 +45,12 @@ export class ListarComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   especialCharMask(text) {

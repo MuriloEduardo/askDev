@@ -4,14 +4,17 @@ import { CommonModule } from '@angular/common';
 import { AtividadesRoutingModule } from './atividades-routing.module';
 import { AtividadesComponent } from './atividades.component';
 import { AjudanteComponent } from './ajudante/ajudante.component';
-import { AjudadoComponent } from './ajudado/ajudado.component';
-import { PropostasComponent } from './propostas/propostas.component';
+import { PerguntasComponent } from './perguntas/perguntas.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AtividadesRoutingModule
   ],
-  declarations: [AtividadesComponent, AjudanteComponent, AjudadoComponent, PropostasComponent]
+  declarations: [
+    AtividadesComponent,
+    AjudanteComponent,
+    PerguntasComponent
+  ]
 })
 export class AtividadesModule { }

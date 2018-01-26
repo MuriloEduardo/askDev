@@ -1,6 +1,5 @@
 import { PerguntaComponent } from './pergunta/pergunta.component';
 import { ListarComponent } from './listar/listar.component';
-import { DevsComponent } from './devs/devs.component';
 import { CriarComponent } from './criar/criar.component';
 import { PerguntasComponent } from './perguntas.component';
 import { NgModule } from '@angular/core';
@@ -12,12 +11,8 @@ const routes: Routes = [
     component: PerguntasComponent,
     children: [
       {
-        path: ':id/:titulo',
+        path: ':perguntaId/:perguntaTitulo',
         component: PerguntaComponent
-      },
-      {
-        path: 'devs',
-        component: DevsComponent
       },
       {
         path: 'criar',

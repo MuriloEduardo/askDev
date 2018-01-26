@@ -1,16 +1,16 @@
-import { User } from './../../user/user';
+import { User } from './../../_interfaces/user';
 import { AuthService } from './../../auth/auth.service';
-import { Pergunta } from './../../perguntas/pergunta/pergunta';
+import { Pergunta } from './../../_interfaces/pergunta';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';
 
 @Component({
-  selector: 'app-ajudado',
-  templateUrl: './ajudado.component.html',
-  styleUrls: ['./ajudado.component.scss']
+  selector: 'app-perguntas',
+  templateUrl: './perguntas.component.html',
+  styleUrls: ['./perguntas.component.scss']
 })
-export class AjudadoComponent implements OnInit {
+export class PerguntasComponent implements OnInit {
 
   perguntasCol: AngularFirestoreCollection<Pergunta>;
   perguntas$: any;

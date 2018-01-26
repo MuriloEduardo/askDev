@@ -34,6 +34,14 @@ const routes: Routes = [
       {
         path: 'atividades',
         loadChildren: './atividades/atividades.module#AtividadesModule'
+      },
+      {
+        path: 'propostas',
+        loadChildren: './propostas/propostas.module#PropostasModule'
+      },
+      {
+        path: 'mensagens',
+        loadChildren: './mensagens/mensagens.module#MensagensModule'
       }
     ]
   },

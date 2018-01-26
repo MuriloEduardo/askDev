@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { AuthService } from './../../auth/auth.service';
-import { Pergunta } from './../pergunta/pergunta';
+import { Pergunta } from './../../_interfaces/pergunta';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
