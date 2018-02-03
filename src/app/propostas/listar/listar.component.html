@@ -1,13 +1,13 @@
 <section class="mt-5 mb-5" *ngIf="pergunta | async as _pergunta">
   <div class="container">
     <div class="row">
-      <div class="col-md-1 pr-0">
-        <a class="btn btn-primary mt-1" [routerLink]="['/atividades', 'perguntas']">
+      <div class="col-md-1">
+        <a class="btn btn-secondary btn-block" [routerLink]="['/atividades', 'perguntas']">
           <i class="fa fa-angle-left" aria-hidden="true"></i>
         </a>
       </div>
-      <div class="col-md-11 pl-md-0">
-        <h1 class="mt-0">{{ _pergunta.titulo }}</h1>
+      <div class="col-md-11">
+        <h1>{{ _pergunta.titulo }}</h1>
       </div>
     </div>
   </div>
@@ -16,40 +16,42 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div *ngIf="propostas$ | async; let propostas; else loading">
-          <div class="card" *ngFor="let proposta of propostas">
-            <div class="card-body">
-              <div class="row" *ngIf="proposta.data.user | async as user">
+        <div *ngIf="conversas$ | async; let conversas; else loading">
+          <div class="card mt-3 box-sh-1" *ngFor="let conversa of conversas">
+            <div class="card-body" *ngIf="conversa.data.mensagens | async; let mensagens">
+              <div class="row" *ngIf="conversa.data.user | async as user">
                 <div class="col-md-1">
                   <a [routerLink]="['/users', user.uid]">
                     <img [src]="user.photoURL" class="rounded img-fluid" [alt]="user.displayName" [title]="user.displayName">
                   </a>
                 </div>
                 <div class="col-md-11">
-                  <h3>{{ user.displayName }}</h3>
+                  <div class="row">
+                    <div class="col-md-9">
+                      <h5>{{ user.displayName }}</h5>
+                    </div>
+                    <div class="col-md-3">
+                      <h3 *ngIf="ultimaProposta(mensagens); let proposta" class="text-success">{{ proposta.dataMensagens.valor | currency:'BRL':'symbol' }}</h3>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-11 offset-md-1">
-                  <p>{{ proposta.data.body }}</p>
-                  <small><strong>Criado Em:</strong> {{ proposta.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+                  <p>{{ mensagens[mensagens.length - 1].dataMensagens.body }}</p>
                 </div>
               </div>
               <div class="row mt-3">
                 <div class="col-md-11 offset-md-1">
-                  <a class="btn btn-success" [routerLink]="['/atividades']">Aceitar Proposta</a>
-                  <a class="btn btn-link text-muted" [routerLink]="['/atividades']">Ver Proposta</a>
-                  <a class="btn btn-link text-danger" (click)="delete(proposta.id)">Remover</a>
+                  <a *ngIf="ultimaProposta(mensagens); let proposta" class="btn btn-success" [routerLink]="['/propostas', 'aceitar', proposta.idMensagens]">Aceitar Proposta</a>
+                  <a class="btn btn-link text-muted" [routerLink]="['/conversas', conversa.id]">Ir Para As Mensagens</a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card card-body text-center" *ngIf="propostas.length === 0">
-            <h4 class="display-3 text-muted">
-              Sem Resultados<br>
-              <i class="fa fa-frown-o" aria-hidden="true"></i>
-            </h4>
-            <a [routerLink]="['/atividades', 'ajudado']">Voltar</a>
+          <div class="card card-body text-muted text-center" *ngIf="!conversas.length">
+            <h1>Sem Resultados</h1>
+            <i class="fa fa-3x fa-frown-o" aria-hidden="true"></i>
           </div>
         </div>
         <ng-template #loading>

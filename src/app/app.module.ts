@@ -1,5 +1,4 @@
 import { AuthModule } from './auth/auth.module';
-import { ViewsModule } from './views/views.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -13,21 +12,27 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { ConversasModule } from './conversas/conversas.module';
+import { DefaultComponent } from './views/default/default.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DefaultComponent
   ],
   imports: [
     BrowserModule,
-    ViewsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     NgbModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     AppRoutingModule,
-    AuthModule
+    AuthModule,
+    ConversasModule
   ],
   providers: [],
   bootstrap: [AppComponent]

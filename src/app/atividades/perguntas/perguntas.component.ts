@@ -1,3 +1,4 @@
+import { PerguntasService } from './../../perguntas/perguntas.service';
 import { User } from './../../_interfaces/user';
 import { AuthService } from './../../auth/auth.service';
 import { Pergunta } from './../../_interfaces/pergunta';
@@ -14,33 +15,39 @@ export class PerguntasComponent implements OnInit {
 
   perguntasCol: AngularFirestoreCollection<Pergunta>;
   perguntas$: any;
-  user: User;
+  user$: User;
 
   constructor(
     private auth: AuthService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private perguntasService: PerguntasService
   ) {
 
     this.auth.user.subscribe(user => {
       if (user) {
-        this.user = user;
+
+        this.user$ = user;
+
+        this.perguntasCol = this.afs.collection('perguntas', ref => ref
+          .where('userId', '==', this.user$.uid)
+        );
+
+        this.perguntas$ = this.perguntasCol.snapshotChanges()
+          .map(actions => {
+            return actions.map(a => {
+              const data = a.payload.doc.data();
+              const id = a.payload.doc.id;
+
+              data.propostas = this.afs.collection('mensagens', ref => ref
+                .where('perguntaId', '==', id)
+                .where('valor', '>', 0)
+              ).valueChanges();
+
+              return { id, data };
+            });
+          });
       }
     });
-
-    this.perguntasCol = this.afs.collection('perguntas');
-
-    this.perguntas$ = this.perguntasCol.snapshotChanges()
-      .map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data() as Pergunta;
-          const id = a.payload.doc.id;
-
-          data.propostas = this.afs.collection('propostas', ref => ref.where('perguntaId', '==', id)).valueChanges();
-          data.user = this.afs.collection('users').doc(this.user.uid).valueChanges();
-
-          return { id, data };
-        });
-      });
   }
 
   ngOnInit() {

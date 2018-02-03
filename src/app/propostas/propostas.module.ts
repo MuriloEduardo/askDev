@@ -5,6 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PropostasRoutingModule } from './propostas-routing.module';
 import { PropostasComponent } from './propostas.component';
 import { ListarComponent } from './listar/listar.component';
+import { AceitarComponent } from './aceitar/aceitar.component';
+import { PagamentoComponent } from './pagamento/pagamento.component';
 
 @NgModule({
   imports: [
@@ -14,7 +16,9 @@ import { ListarComponent } from './listar/listar.component';
   ],
   declarations: [
     PropostasComponent,
-    ListarComponent
+    ListarComponent,
+    AceitarComponent,
+    PagamentoComponent
   ]
 })
 export class PropostasModule { }

@@ -1,9 +1,9 @@
+import { PerguntasService } from './../../perguntas/perguntas.service';
 import { User } from './../../_interfaces/user';
 import { AuthService } from './../../auth/auth.service';
-import { Pergunta } from './../../_interfaces/pergunta';
+import { Conversa } from './../../_interfaces/conversa';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
-import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-ajudante',
@@ -12,35 +12,50 @@ import 'rxjs/add/operator/map';
 })
 export class AjudanteComponent implements OnInit {
 
-  perguntasCol: AngularFirestoreCollection<Pergunta>;
-  perguntas$: any;
-  user: User;
+  conversasCol: AngularFirestoreCollection<Conversa>;
+  conversas$: any;
+  user$: User;
 
   constructor(
     private auth: AuthService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private perguntasService: PerguntasService
   ) {
 
     this.auth.user.subscribe(user => {
+
       if (user) {
-        this.user = user;
+
+        this.user$ = user;
+
+        this.conversasCol = this.afs.collection('conversas', ref => ref
+          .where('userId', '==', this.user$.uid)
+        );
+
+        this.conversas$ = this.conversasCol.snapshotChanges()
+          .map(actions => {
+            return actions.map(a => {
+              const data = a.payload.doc.data();
+              const id = a.payload.doc.id;
+
+              data.userTo = this.afs.collection('users').doc(data.userToId).valueChanges();
+
+              data.pergunta = this.afs.collection('perguntas').doc(data.perguntaId).valueChanges();
+
+              data.mensagens = this.afs.collection('mensagens', ref => ref
+                .where('conversaId', '==', id)
+              ).valueChanges();
+
+              data.minhasPropostas = this.afs.collection('mensagens', ref => ref
+                .where('perguntaId', '==', data.perguntaId)
+                .where('valor', '>', 0)
+              ).valueChanges();
+
+              return { id, data };
+            });
+          });
       }
     });
-
-    this.perguntasCol = this.afs.collection('perguntas');
-
-    this.perguntas$ = this.perguntasCol.snapshotChanges()
-      .map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data() as Pergunta;
-          const id = a.payload.doc.id;
-
-          data.propostas = this.afs.collection('propostas', ref => ref.where('perguntaId', '==', id)).valueChanges();
-          data.user = this.afs.collection('users').doc(this.user.uid).valueChanges();
-
-          return { id, data };
-        });
-      });
   }
 
   ngOnInit() {

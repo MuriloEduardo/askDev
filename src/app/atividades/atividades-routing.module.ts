@@ -10,15 +10,11 @@ const routes: Routes = [
     component: AtividadesComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'ajudante',
-      },
-      {
         path: 'ajudante',
         component: AjudanteComponent
       },
       {
-        path: 'perguntas',
+        path: '',
         component: PerguntasComponent
       }
     ]

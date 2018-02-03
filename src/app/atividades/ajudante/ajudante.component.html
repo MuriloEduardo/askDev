@@ -1,3 +1,64 @@
-<p>
-  ajudante works!
-</p>
+<section class="mt-5 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="mb-5 text-muted">Minhas Ajudas <span *ngIf="conversas$ | async; let conversas; else loading">({{ conversas.length }})</span></h1>
+        <div *ngIf="conversas$ | async; let conversas; else loading">
+          <div *ngFor="let conversa of conversas" class="card box-sh-1 mt-3">
+            <div class="card-body" *ngIf="conversa.data.pergunta | async; let pergunta; else loading">
+              <div class="row" *ngIf="perguntasService.nameStatus[pergunta.status]; let nameStatus">
+                <div class="col-md-1 text-center">
+                  <i class="align-middle fa-3x {{ nameStatus.icone + (' text-' + nameStatus.class) }}"></i>
+                </div>
+                <div class="col-md-11">
+                  <!-- Titulo Pergunta -->
+                  <a [routerLink]="['/perguntas', conversa.data.perguntaId, pergunta.titulo]">
+                    <h5>{{ pergunta.titulo }}</h5>
+                  </a>
+                  <ul class="list-inline">
+                    <li class="list-inline-item">
+                      <small><strong>Status:</strong> <span class="{{ 'text-' + nameStatus.class }}">{{ nameStatus.nome }}</span></small>
+                    </li>
+                    <li class="list-inline-item">
+                      <!-- Qntde Mensagens -->
+                      <small *ngIf="conversa.data.mensagens | async; let mensagens; else loading">
+                        <strong>Mensagens: </strong>{{ mensagens.length }}
+                      </small>
+                    </li>
+                    <li class="list-inline-item">
+                      <!-- Qntde Propostas -->
+                      <small *ngIf="conversa.data.minhasPropostas | async; let minhasPropostas; else loading">
+                        <strong>Propostas: </strong>{{ minhasPropostas.length }}
+                      </small>
+                    </li>
+                    <li class="list-inline-item">
+                      <small><strong>Criado Em: </strong>{{ conversa.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+                    </li>
+                  </ul>
+                  <!-- Usuario -->
+                  <div class="row">
+                    <div class="col-md-3">
+                      <a *ngIf="conversa.data.userTo | async as user" class="card float-left mt-2" [routerLink]="['/users', user.uid]">
+                        <div class="p-2 text-truncate">
+                          <img [src]="user.photoURL" class="rounded mr-1" width="28" height="28" [alt]="user.displayName" [title]="user.displayName">
+                          <small>{{ user.uid == user$.uid ? 'Eu' : user.displayName }}</small>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-body text-muted text-center" *ngIf="!conversas.length">
+            <h1>Sem Resultados</h1>
+            <i class="fa fa-3x fa-frown-o" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ng-template #loading>
+  <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+</ng-template>

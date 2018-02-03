@@ -1,5 +1,6 @@
 import { AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signin',
@@ -8,14 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SigninComponent implements OnInit {
 
-  constructor(private auth: AuthService) { }
+  form: FormGroup;
+
+  constructor(
+    private auth: AuthService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      email: [null, [
+        Validators.required,
+        Validators.email
+      ]],
+      password: [null, [Validators.required]]
+    });
   }
 
-  signInWithGoogle() {
-    this.auth.googleLogin()
-      .then((res) => {});
+  onSubmit() {
+    if (this.form.invalid) {
+      return false;
+    }
+    this.auth.emailLogin(this.form.value.email, this.form.value.password)
+      .then(res => this.auth.completeLogin());
   }
 
 }

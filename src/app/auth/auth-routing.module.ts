@@ -1,8 +1,9 @@
-import { SignupComponent } from './signup/signup.component';
+import { WhereComponent } from './where/where.component';
 import { SigninComponent } from './signin/signin.component';
 import { AuthComponent } from './auth.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   {
@@ -11,18 +12,21 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'signin',
+        component: SigninComponent
       },
       {
-        path: 'signin',
-        component: SigninComponent
+        path: 'where',
+        component: WhereComponent
       },
       {
         path: 'signup',
         component: SignupComponent
       }
     ]
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
 

@@ -1,26 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { MensagensRoutingModule } from './mensagens-routing.module';
-import { MensagensComponent } from './mensagens.component';
+import { ConversasRoutingModule } from './conversas-routing.module';
+import { ConversasComponent } from './conversas.component';
 import { PropostaComponent } from './proposta/proposta.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PerguntasModule } from '../perguntas/perguntas.module';
 import { ListarComponent } from './listar/listar.component';
-import { MensagemComponent } from './mensagem/mensagem.component';
+import { ConversaComponent } from './conversa/conversa.component';
+import { ListaComponent } from './listar/lista/lista.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    MensagensRoutingModule,
+    ConversasRoutingModule,
     ReactiveFormsModule,
     PerguntasModule
   ],
   declarations: [
-    MensagensComponent,
+    ConversasComponent,
     PropostaComponent,
     ListarComponent,
-    MensagemComponent
+    ConversaComponent,
+    ListaComponent
+  ],
+  exports: [
+    ListaComponent
   ]
 })
-export class MensagensModule { }
+export class ConversasModule { }

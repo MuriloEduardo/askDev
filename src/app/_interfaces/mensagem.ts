@@ -1,9 +1,8 @@
 export interface Mensagem {
     body: string;
-    userId: string;
-    userToId: string;
-    perguntaId: string;
+    conversaId: string;
     createdAt: any;
-    valor: string;
+    valor: number;
+    userId: string;
+    perguntaId: string;
   }
-  

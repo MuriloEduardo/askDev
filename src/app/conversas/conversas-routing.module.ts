@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MensagensComponent } from './mensagens.component';
+import { ConversasComponent } from './conversas.component';
 import { PropostaComponent } from './proposta/proposta.component';
 import { ListarComponent } from './listar/listar.component';
-import { MensagemComponent } from './mensagem/mensagem.component';
+import { ConversaComponent } from './conversa/conversa.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MensagensComponent,
+    component: ConversasComponent,
     children: [
       {
         path: '',
@@ -19,8 +19,8 @@ const routes: Routes = [
         component: PropostaComponent
       },
       {
-        path: ':mensagemId',
-        component: MensagemComponent
+        path: ':conversaId',
+        component: ConversaComponent
       }
     ]
   }
@@ -30,4 +30,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class MensagensRoutingModule { }
+export class ConversasRoutingModule { }

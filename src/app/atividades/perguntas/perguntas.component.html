@@ -1,24 +1,38 @@
 <section class="mt-5 mb-5">
   <div class="container">
     <div class="row">
-      <div class="col-md-3">
-      </div>
-      <div class="col-md-9">
+      <div class="col-md-12">
+        <h1 class="mb-5 text-muted">Minhas Perguntas <span *ngIf="perguntas$ | async; let propostas; else loading">({{ propostas.length }})</span></h1>
         <div *ngIf="perguntas$ | async; let perguntas; else loading">
-          <div class="card" *ngFor="let pergunta of perguntas">
+          <div class="card mt-3" *ngFor="let pergunta of perguntas">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <a [routerLink]="['/propostas', pergunta.id]">
+              <div class="row" *ngIf="perguntasService.nameStatus[pergunta.data.status]; let nameStatus">
+                <div class="col-md-1 text-center">
+                  <i class="align-middle fa-3x {{ nameStatus.icone + (' text-' + nameStatus.class) }}"></i>
+                </div>
+                <div class="col-md-11">
+                  <a [routerLink]="!pergunta.data.status ? ['/propostas', pergunta.id] : ['/perguntas', pergunta.id, pergunta.data.titulo]">
                     <h4>{{ pergunta.data.titulo }}</h4>
                   </a>
-                  <small><strong>Propostas:</strong> <span *ngIf="pergunta.data.propostas | async; let propostas; else loading">{{ propostas?.length }}</span></small>
-                  <small><strong>Criado Em:</strong> {{ pergunta.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+                  <ul class="list-inline">
+                    <li class="list-inline-item">
+                      <small><strong>Status:</strong> <span class="{{ 'text-' + nameStatus.class }}">{{ nameStatus.nome }}</span></small>
+                    </li>
+                    <li class="list-inline-item">
+                      <small><strong>Propostas:</strong> <span *ngIf="pergunta.data.propostas | async; let propostas; else loading">{{ propostas.length }}</span></small>
+                    </li>
+                    <li class="list-inline-item">
+                      <small><strong>Criado Em:</strong> {{ pergunta.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-          <div *ngIf="perguntas.length === 0">Sem resultados :(</div>
+          <div class="card card-body text-muted text-center" *ngIf="!perguntas.length">
+            <h1>Sem Resultados</h1>
+            <i class="fa fa-3x fa-frown-o" aria-hidden="true"></i>
+          </div>
         </div>
         <ng-template #loading>
           <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>

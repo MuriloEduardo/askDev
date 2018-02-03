@@ -1,8 +1,7 @@
 import { AuthGuard } from './auth/auth.guard';
-import { DefaultComponent } from './views/default/default.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DefaultComponent } from './views/default/default.component';
 
 const routes: Routes = [
   {
@@ -12,19 +11,15 @@ const routes: Routes = [
   {
     path: '',
     component: DefaultComponent,
-    canActivate: [AuthGuard],
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'dashboard',
-      },
-      {
-        path: 'dashboard',
-        component: DashboardComponent
+        redirectTo: 'perguntas',
       },
       {
         path: 'user',
+        canActivate: [AuthGuard],
         loadChildren: './user/user.module#UserModule'
       },
       {
@@ -33,15 +28,18 @@ const routes: Routes = [
       },
       {
         path: 'atividades',
+        canActivate: [AuthGuard],
         loadChildren: './atividades/atividades.module#AtividadesModule'
       },
       {
         path: 'propostas',
+        canActivate: [AuthGuard],
         loadChildren: './propostas/propostas.module#PropostasModule'
       },
       {
-        path: 'mensagens',
-        loadChildren: './mensagens/mensagens.module#MensagensModule'
+        path: 'conversas',
+        canActivate: [AuthGuard],
+        loadChildren: './conversas/conversas.module#ConversasModule'
       }
     ]
   },

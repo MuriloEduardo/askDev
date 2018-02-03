@@ -2,6 +2,10 @@
 
 @import 'imports/variables';
 @import 'imports/custom';
+@import 'imports/desktop';
 @import 'imports/mobile';
 
 @import '~font-awesome/scss/font-awesome.scss';
+
+@import "~ngx-toastr/toastr";
+@import "~ngx-toastr/toastr-bs4-alert"

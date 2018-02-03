@@ -1,0 +1,16 @@
+<div class="col-sm-8 offset-sm-2">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <a [routerLink]="['/perguntas', 'criar']" class="btn btn-lg btn-primary btn-block">Peça Ajuda</a>
+        </div>
+        <div class="col-sm-6">
+          <a [routerLink]="['/auth', 'signup']" class="btn btn-lg btn-primary btn-block">Registrar-se e Começar</a>
+        </div>
+      </div>
+      <hr class="mt-4">
+      <p class="text-center">Você já é cadastrado? <a [routerLink]="['/auth', 'signin']">Entrar</a></p>
+    </div>
+  </div>
+</div>

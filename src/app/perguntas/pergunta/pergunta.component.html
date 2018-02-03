@@ -1,46 +1,93 @@
-<section class="mt-5 mb-5" *ngIf="pergunta | async as _pergunta; else loading">
+<section class="mt-5 mb-5" *ngIf="pergunta$ | async as pergunta; else loading">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-1" *ngIf="inputPerguntaId">
-            <a class="btn btn-secondary btn-block" [routerLink]="['/perguntas', perguntaId, _pergunta.titulo]">
+            <a class="btn btn-secondary btn-block" [routerLink]="['/perguntas', perguntaId, pergunta.titulo]">
               <i class="fa fa-angle-left" aria-hidden="true"></i>
             </a>
           </div>
           <div class="col-md-11">
-            <h1 class="mb-5">{{ _pergunta.titulo }}</h1>
+            <h1 class="mb-5">{{ pergunta.titulo }}</h1>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-9">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-9">
-                    <h6><strong>Propostas:</strong> <span *ngIf="propostas | async; let propostas; else loading">{{ propostas?.length }}</span></h6>
-                  </div>
-                  <div class="col-md-3" *ngIf="!inputPerguntaId">
-                    <a class="btn btn-success btn-block" [routerLink]="['/mensagens', 'proposta', perguntaId, _pergunta.titulo]">Fazer Proposta</a>
+        <div *ngIf="!pergunta.status">
+          <div *ngIf="propostas$ | async; let propostas; else loading">
+            <div class="row" *ngIf="!inputPerguntaId && propostas[0]?.userId == userId">
+              <div class="col-md-12">
+                <div class="card mb-4 box-sh-1 pl-3 pr-3 pt-2 pb-2">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <small class="text-uppercase">Sua Proposta</small>
+                      <h4 class="text-success font-weight-bold">{{ propostas[propostas.length - 1].valor | currency:'BRL':'symbol' }}</h4>
+                    </div>
+                    <div class="col-md-8">
+                      <small class="text-muted font-italic">{{ propostas[propostas.length - 1].body }}</small>
+                    </div>
                   </div>
                 </div>
-                <hr>
-                <h4>Descrição</h4>
-                <p>{{ _pergunta.body }}</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="card" *ngIf="user | async as _user; else loading">
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-4">
-                    <img [src]="_user.photoURL" class="img-fluid rounded" [alt]="_user.displayName" [title]="_user.displayName">
-                  </div>
-                  <div class="col-md-8 pl-md-0">
-                    <h6 class="card-title text-truncate">{{ _user.displayName }}</h6>
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-9">
+                        <ul class="list-inline">
+                          <li class="list-inline-item">
+                            <small *ngIf="perguntasService.nameStatus[pergunta.status]; let nameStatus">
+                              <strong>Status: </strong>
+                              <span class="text-{{ nameStatus.class }}">{{ nameStatus.nome }}</span>
+                            </small>
+                          </li>
+                          <li class="list-inline-item">
+                            <small *ngIf="propostas$ | async; let propostas; else loading">
+                              <strong>Propostas: </strong>
+                              <span>{{ propostas?.length }}</span>
+                            </small>
+                          </li>
+                        </ul>
+                        <div>{{ pergunta.userId }}</div>
+                        <div>{{ userId }}</div>
+                        <div>{{ pergunta.status }}</div>
+                        <div class="card float-left" *ngIf="(pergunta.status || userId !== pergunta.userId ? userCreator : userPropostaAceita) | async as user; else loading">
+                          <div class="p-2 text-truncate">
+                            <img [src]="user.photoURL" class="rounded mr-1" width="38" height="38" [alt]="user.displayName" [title]="user.displayName">
+                            <small class="card-title text-truncate">{{ user.uid == userId ? 'Eu' : user.displayName }}</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <!-- Botoes -->
+                        <div *ngIf="(pergunta.userId !== userId || pergunta.status) && !inputPerguntaId">
+                          <div *ngIf="minhasPropostas$ | async as minhasPropostas; else loading">
+                            <div *ngIf="!pergunta.status">
+                              <!-- Fazer / Melhorar uma Proposta -->
+                              <a class="btn btn-primary btn-block" [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]">{{ minhasPropostas.length ? 'Melhorar a Proposta' : 'Fazer uma Proposta' }}</a>
+                              <!-- Ir Para as Mensagens -->
+                              <a *ngIf="minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', minhasPropostas[0].conversaId]">Enviar Mensagem</a>
+                              <a *ngIf="!minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]" [queryParams]="{ add: 1 }">Enviar Mensagem</a>
+                            </div>
+                            <div *ngIf="pergunta.status">
+                              <a class="btn btn-secondary btn-block" [routerLink]="['/conversas', propostaAceita$.conversaId]">Mensagens</a>
+                              <!-- Garantir Pagamento -->
+                              <a *ngIf="pergunta.userId == userId" class="btn btn-success btn-lg btn-block" [routerLink]="['/propostas', 'pagamento', pergunta.propostaAceita]">Garantir Pagamento</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <hr class="mt-5 mb-5">
+                <h5>Descrição</h5>
+                <p>{{ pergunta.body }}</p>
               </div>
             </div>
           </div>

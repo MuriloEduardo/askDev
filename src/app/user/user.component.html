@@ -1,3 +1,18 @@
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+<nav class="navbar navbar-expand-md bg-light navbar-light box-sh-1 pt-md-0 pb-md-0">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsPerguntas" aria-controls="navbarsPerguntas" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsPerguntas">
+      <ul class="navbar-nav mr-auto navbar-firstlink-nopadding-left">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['/user']">Informações Pessoais</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['/user', 'senha']">Senha</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<router-outlet></router-outlet>

@@ -1,0 +1,16 @@
+<div class="list-group" *ngIf="conversas$ | async; let conversas; else loading">
+  <a [routerLink]="['/conversas', conversa.id]" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let conversa of conversas">
+    <div *ngIf="conversa.data.user | async as user" class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1"><strong>{{ user.displayName }}</strong> te enviou uma mensagem</h5>
+      <small class="text-muted">{{ conversa.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+    </div>
+    <small class="text-muted" *ngIf="conversa.data.pergunta | async as pergunta">Em <strong>{{ pergunta.titulo }}</strong></small>
+  </a>
+  <div class="card card-body text-muted text-center" *ngIf="!conversas.length">
+    <h1>Sem Resultados</h1>
+    <i class="fa fa-3x fa-frown-o" aria-hidden="true"></i>
+  </div>
+</div>
+<ng-template #loading>
+  <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+</ng-template>

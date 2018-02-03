@@ -3,33 +3,8 @@ body {
   background-color: $gray-lighter;
 }
 
-.form-auth .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.form-auth .form-auth-heading,
-.form-auth .checkbox {
-  margin-bottom: 10px;
-}
-
-.form-auth .checkbox {
-  font-size: 12px;
-}
-
-.form-auth input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-auth input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.dropdown-toggle::after {
+  display: none;
 }
 
 .navbar-firstlink-nopadding-left .nav-item:first-child .nav-link {
@@ -54,11 +29,6 @@ body {
 .navbar-light .navbar-nav .nav-item:hover > .nav-link {
   border-bottom-color: $gray-dark!important;
 }
-
-// .navbar {
-//   padding-top: 0;
-//   padding-bottom: 0;
-// }
 
 .dropdown-menu {
   border-top-left-radius: 0;
@@ -104,4 +74,8 @@ body {
 .input-group-btn:not(:first-child) > .btn:not(:last-child) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }

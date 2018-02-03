@@ -1,0 +1,64 @@
+<section class="mt-5 mb-5" *ngIf="mensagem$; let mensagem">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1>
+          Aceitar a proposta de
+          <a *ngIf="mensagem$.user | async; let user" [routerLink]="['/user', mensagem$.userId]">{{ user.displayName }}</a>
+          por <span class="text-primary">{{ mensagem$.valor | currency:'BRL':'symbol' }}</span>?
+        </h1>
+      </div>
+    </div>
+    <hr class="mt-5 mb-5">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <p>Pague o montante da pergunta. O dinheiro não será liberado para o programador até que a pergunta seja solucionada.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <p>Entre em contato com o programador para começar e faça o acompanhamento online da sua questão.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <p>Aprove a ajuda depois de finalizada.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <p>O AskDev está encarregado de liberar seu depósito para o programador.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-body">
+          <h3 class="text-success">Lembre-se que todo o processo está garantido pelo AskDev.</h3>
+          <p>Se você não estiver 100% satisfeiro com o trabalho realizado, devolveremos seu dinheiro.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5 mb-5">
+      <div class="col-md-3">
+        <button class="btn btn-block btn-lg btn-primary" (click)="updatePergunta()">Aceitar e Pagar</button>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-block btn-lg btn-secondary" (click)="cancelar()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</section>

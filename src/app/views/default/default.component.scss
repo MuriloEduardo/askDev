@@ -1,7 +1,3 @@
-.dropdown-toggle::after {
-  display: none;
-}
-
-.input-group-btn.show.dropdown .btn:last-child {
-  border-bottom-right-radius: 0;
+.list-conversas > .dropdown-menu {
+  min-width: 450px;
 }

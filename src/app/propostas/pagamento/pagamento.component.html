@@ -1,0 +1,55 @@
+<section class="mt-5 mb-5" *ngIf="mensagem$; let mensagem">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 class="mb-3">
+          Você está prestes fazer o depósito em garantia para:<strong *ngIf="pergunta$ | async; let pergunta"> {{ pergunta.titulo }}</strong>
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <small class="text-uppercase">Valor Total de sua Proposta</small>
+                <h4 class="text-success">{{ mensagem$.valor | currency:'BRL':'symbol' }}</h4>
+              </div>
+              <div class="col">
+                <small class="text-uppercase">Valor Total a Depositar em Garantia</small>
+                <h4 class="text-success">{{ mensagem$.valor | currency:'BRL':'symbol' }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4 class="mt-5 mb-5">Selecione o método de pagamento que deseja utilizar:</h4>
+        <div class="list-group">
+          <a *ngFor="let metodo of metodosPgto" href="{{ metodo.link }}" class="list-group-item">
+            <div class="row">
+              <div class="col-md-6">
+                <h3>
+                  {{ metodo.titulo }}
+                  <span *ngIf="metodo.sugerido" class="badge badge-success">Sugerido</span>
+                </h3>
+                <p><strong>5% de taxa adicional para usar este método de pagamento</strong></p>
+                <p>{{ metodo.descricao }}</p>
+              </div>
+              <div class="col-md-4"></div>
+              <div class="col-md-2 text-center">
+                <div class="form-group">
+                  <a href="{{ metodo.link }}" class="btn btn-success btn-block">Pagar</a>
+                </div>
+                <h4 class="text-success">{{ mensagemFivePercent | currency:'BRL':'symbol' }}</h4>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

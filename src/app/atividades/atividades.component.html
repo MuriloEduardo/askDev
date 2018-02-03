@@ -1,1 +1,26 @@
+<nav class="navbar navbar-expand-md bg-light navbar-light box-sh-1 pt-md-0 pb-md-0">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsPerguntas" aria-controls="navbarsPerguntas" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsPerguntas">
+      <ul class="navbar-nav mr-auto navbar-firstlink-nopadding-left">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['/atividades', 'ajudante']">Minhas Ajudas</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="['/atividades']">Minhas Perguntas</a>
+        </li>
+        <!-- <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link" [routerLink]="['/perguntas', 'devs']">Encontre Dev's</a>
+        </li> -->
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="btn btn-success" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 <router-outlet></router-outlet>

@@ -9,23 +9,32 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { SigninComponent } from './signin/signin.component';
+import { WhereComponent } from './where/where.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './signup/signup.component';
+import { LoginSocialComponent } from './login-social/login-social.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AuthComponent,
     SigninComponent,
-    SignupComponent
+    WhereComponent,
+    SignupComponent,
+    LoginSocialComponent
   ],
   providers: [
     AuthService,
     AuthGuard
+  ],
+  exports: [
+    LoginSocialComponent
   ]
 })
 export class AuthModule { }

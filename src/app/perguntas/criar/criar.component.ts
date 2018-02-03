@@ -1,18 +1,25 @@
+import { User } from './../../_interfaces/user';
+import { Subscription } from 'rxjs/Subscription';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Router } from '@angular/router';
 import { AuthService } from './../../auth/auth.service';
 import { Pergunta } from './../../_interfaces/pergunta';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-criar',
   templateUrl: './criar.component.html',
   styleUrls: ['./criar.component.scss']
 })
-export class CriarComponent implements OnInit {
+export class CriarComponent implements OnInit, OnDestroy {
 
-  userId: string;
+  subscription: Subscription;
+  userId = '0';
+  user$: User;
   form: FormGroup;
   perguntasCol: AngularFirestoreCollection<Pergunta>;
   orcamentoArr = [
@@ -22,14 +29,16 @@ export class CriarComponent implements OnInit {
   ];
 
   constructor(
+    private toastr: ToastrService,
     private router: Router,
     private auth: AuthService,
     private afs: AngularFirestore,
     private formBuilder: FormBuilder
   ) {
-    this.auth.user.subscribe(user => {
+    this.subscription = this.auth.user.subscribe(user => {
       if (user) {
-        this.userId = user.uid;
+        this.user$ = user;
+        this.userId = this.user$.uid;
       }
     });
   }
@@ -37,28 +46,28 @@ export class CriarComponent implements OnInit {
   ngOnInit() {
 
     this.form = this.formBuilder.group({
-      categoria: [null, [Validators.required]],
-      subcategoria: [null, [Validators.required]],
       titulo: [null, [Validators.required]],
       body: [null, [Validators.required]],
-      prazo: [null, [Validators.required]],
-      orcamento: [null, [Validators.required]]
+      orcamento: [null, [Validators.required]],
+      categorias: [null, [Validators.required]],
     });
 
     this.perguntasCol = this.afs.collection('perguntas');
   }
 
+  ngOnDestroy() {
+  }
+
   onSubmit() {
 
-    this.form.value.user = {
-      uid: this.userId
-    };
-
+    this.form.value.userId    = this.userId;
+    this.form.value.status    = 0;
     this.form.value.createdAt = new Date();
 
     this.perguntasCol.add(this.form.value)
       .then((docRef) => {
-        this.router.navigate(['/']);
+        this.toastr.success('Sua pergunta foi postada!', 'Uhuul!');
+        this.router.navigate(['/perguntas']);
       })
       .catch((error) => console.error('Error writing document: ', error));
   }

@@ -1,3 +1,4 @@
+import { PerguntasService } from './../perguntas/perguntas.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -15,6 +16,9 @@ import { PerguntasComponent } from './perguntas/perguntas.component';
     AtividadesComponent,
     AjudanteComponent,
     PerguntasComponent
+  ],
+  providers: [
+    PerguntasService
   ]
 })
 export class AtividadesModule { }

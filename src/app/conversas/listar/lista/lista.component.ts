@@ -1,21 +1,24 @@
-import { User } from './../../_interfaces/user';
-import { AuthService } from './../../auth/auth.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { User } from './../../../_interfaces/user';
+import { AuthService } from './../../../auth/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Mensagem } from './../../_interfaces/mensagem';
+import { Conversa } from './../../../_interfaces/conversa';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Subscription } from 'rxjs/Subscription';
 
+@AutoUnsubscribe()
 @Component({
-  selector: 'app-listar',
-  templateUrl: './listar.component.html',
-  styleUrls: ['./listar.component.scss']
+  selector: 'app-lista-conversas',
+  templateUrl: './lista.component.html',
+  styleUrls: ['./lista.component.scss']
 })
-export class ListarComponent implements OnInit, OnDestroy {
+export class ListaComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
-  mensagensCol: AngularFirestoreCollection<Mensagem>;
-  mensagens$: any;
-  user: User;
+  conversasCol: AngularFirestoreCollection<Conversa>;
+  conversas$: any;
+  user$: User;
+  userId = '0';
 
   constructor(
     private afs: AngularFirestore,
@@ -23,12 +26,15 @@ export class ListarComponent implements OnInit, OnDestroy {
   ) {
 
     this.subscription = this.auth.user.subscribe(user => {
-    
-      this.user = user;
-    
-      this.mensagensCol = this.afs.collection('mensagens', ref => ref.where('userToId', '==', this.user.uid));
 
-      this.mensagens$ = this.mensagensCol.snapshotChanges()
+      if (user) {
+        this.user$ = user;
+        this.userId = this.user$.uid;
+      }
+
+      this.conversasCol = this.afs.collection('conversas', ref => ref.where('userToId', '==', this.userId));
+
+      this.conversas$ = this.conversasCol.snapshotChanges()
         .map(actions => {
           return actions.map(a => {
 
@@ -46,11 +52,8 @@ export class ListarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   }
-  
+
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
 }
