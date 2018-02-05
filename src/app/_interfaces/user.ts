@@ -4,5 +4,5 @@ export interface User {
   photoURL?: string;
   displayName?: string;
   nome?: string;
-  financasId: string;
+  financasId?: string;
 }
