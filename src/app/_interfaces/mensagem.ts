@@ -5,4 +5,5 @@ export interface Mensagem {
     valor: number;
     userId: string;
     perguntaId: string;
+    preferenceId: string;
   }

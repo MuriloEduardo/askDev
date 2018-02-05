@@ -16,15 +16,15 @@
             <div class="form-group row">
               <div class="col-md-4">
                 <label for="valorLiquido">Valor líquido a cobrar</label>
-                <input type="number" class="form-control form-control-lg" id="valorLiquido" formControlName="valorLiquido" [ngClass]="{'is-invalid': form.controls['valorLiquido'].invalid && form.controls['valorLiquido'].touched}">
+                <input type="number" (keyup)="onValorLiquido()" class="form-control form-control-lg" id="valorLiquido" formControlName="valorLiquido" [ngClass]="{'is-invalid': form.controls['valorLiquido'].invalid && form.controls['valorLiquido'].touched}">
               </div>
               <div class="col-md-4">
                 <label for="comissao">Comissão AskDev</label>
-                <input type="text" class="form-control form-control-lg" id="comissao" formControlName="comissao">
+                <input type="number" [readonly]="true" class="form-control form-control-lg" id="comissao" formControlName="comissao">
               </div>
               <div class="col-md-4">
                 <label for="total">Total</label>
-                <input type="text" class="form-control form-control-lg" id="total" formControlName="total">
+                <input type="number" [readonly]="true" class="form-control form-control-lg" id="total" formControlName="total">
               </div>
             </div>
           </div>

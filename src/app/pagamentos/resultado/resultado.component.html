@@ -1,0 +1,21 @@
+<section class="mt-5 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card" *ngIf="mensagem$; let mensagem">
+          <div class="card-body text-center">
+            <div *ngIf="collection_status === 'approved'">
+              <i class="fa fa-5x fa-check text-success mb-4" aria-hidden="true"></i>
+              <h3 class="text-success">Pagamento aprovado!</h3>
+              <div>{{ (mensagem.user | async)?.displayName }} já pode pode continuar lhe ajudando e ser remunerado por isso!</div>
+              <small>O dinheiro só será liberado quando você disser que sua dúvida foi solucionada.</small>
+              <div class="mt-4">
+                <a [routerLink]="['/conversas', mensagem.conversaId]" class="btn btn-success">Ir para as Mensagens</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

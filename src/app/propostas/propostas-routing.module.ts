@@ -1,4 +1,3 @@
-import { PagamentoComponent } from './pagamento/pagamento.component';
 import { AceitarComponent } from './aceitar/aceitar.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -10,10 +9,6 @@ const routes: Routes = [
     path: '',
     component: PropostasComponent,
     children: [
-      {
-        path: 'pagamento/:mensagemId',
-        component: PagamentoComponent
-      },
       {
         path: 'aceitar/:mensagemId',
         component: AceitarComponent

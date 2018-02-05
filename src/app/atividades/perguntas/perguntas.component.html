@@ -4,15 +4,15 @@
       <div class="col-md-12">
         <h1 class="mb-5 text-muted">Minhas Perguntas <span *ngIf="perguntas$ | async; let propostas; else loading">({{ propostas.length }})</span></h1>
         <div *ngIf="perguntas$ | async; let perguntas; else loading">
-          <div class="card mt-3" *ngFor="let pergunta of perguntas">
-            <div class="card-body">
+          <ul class="list-group box-sh-1 mt-3">
+            <li class="list-group-item" *ngFor="let pergunta of perguntas">
               <div class="row" *ngIf="perguntasService.nameStatus[pergunta.data.status]; let nameStatus">
                 <div class="col-md-1 text-center">
                   <i class="align-middle fa-3x {{ nameStatus.icone + (' text-' + nameStatus.class) }}"></i>
                 </div>
                 <div class="col-md-11">
-                  <a [routerLink]="!pergunta.data.status ? ['/propostas', pergunta.id] : ['/perguntas', pergunta.id, pergunta.data.titulo]">
-                    <h4>{{ pergunta.data.titulo }}</h4>
+                  <a class="text-dark" [routerLink]="!pergunta.data.status ? ['/propostas', pergunta.id] : ['/perguntas', pergunta.id, pergunta.data.titulo]">
+                    <h5>{{ pergunta.data.titulo }}</h5>
                   </a>
                   <ul class="list-inline">
                     <li class="list-inline-item">
@@ -27,8 +27,8 @@
                   </ul>
                 </div>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
           <div class="card card-body text-muted text-center" *ngIf="!perguntas.length">
             <h1>Sem Resultados</h1>
             <i class="fa fa-3x fa-frown-o" aria-hidden="true"></i>

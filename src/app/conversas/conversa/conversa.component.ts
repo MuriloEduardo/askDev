@@ -23,12 +23,14 @@ export class ConversaComponent implements OnInit, OnDestroy {
   subAuth: Subscription;
   subConversa: Subscription;
   subPergunta: Subscription;
+  subRoute: Subscription;
   form: FormGroup;
   user$: User;
   userTo$: Observable<any>;
 
   pergunta$: any;
   perguntaId: string;
+  perguntaDoc: AngularFirestoreDocument<Pergunta>;
   userToHead$: Observable<any>;
   userToHeadCreator$: Observable<any>;
   userToId: string;
@@ -55,50 +57,55 @@ export class ConversaComponent implements OnInit, OnDestroy {
 
         this.user$ = user;
 
-        this.conversaId = this.route.snapshot.params['conversaId'];
+        this.subRoute = this.route.params.subscribe(params => {
 
-        this.conversaDoc = this.afs.doc('conversas/' + this.conversaId);
+          this.conversaId = params['conversaId'];
 
-        this.subConversa = this.conversaDoc.valueChanges().subscribe(conversa => {
+          this.conversaDoc = this.afs.doc('conversas/' + this.conversaId);
 
-          if (conversa) {
+          this.subConversa = this.conversaDoc.valueChanges().subscribe(conversa => {
 
-            this.perguntaId = conversa.perguntaId;
+            if (conversa) {
 
-            this.subPergunta = this.afs.collection('perguntas').doc(conversa.perguntaId).valueChanges()
-              .subscribe(pergunta => {
-                this.pergunta$ = pergunta;
-              });
+              this.perguntaId = conversa.perguntaId;
 
-            this.userToHead$ = this.afs.collection('users').doc(conversa.userToId).valueChanges();
-            this.userToHeadCreator$ = this.afs.collection('users').doc(conversa.userId).valueChanges();
-            this.conversa$ = conversa;
-            this.userToId = conversa.userToId;
-          }
-        });
+              this.perguntaDoc = this.afs.doc('perguntas/' + conversa.perguntaId);
 
-        this.mensagensCol = this.afs.collection('mensagens', ref => ref
-          .where('conversaId', '==', this.conversaId)
-          .orderBy('createdAt')
-        );
+              this.subPergunta = this.perguntaDoc.valueChanges()
+                .subscribe(pergunta => {
+                  this.pergunta$ = pergunta;
+                });
 
-        this.mensagens$ = this.mensagensCol.snapshotChanges()
-          .map(actions => {
-            return actions.map(a => {
-              const data = a.payload.doc.data();
-              const id = a.payload.doc.id;
-
-              data.user = this.afs.collection('users').doc(data.userId).valueChanges();
-
-              return { id, data };
-            });
+              this.userToHead$ = this.afs.collection('users').doc(conversa.userToId).valueChanges();
+              this.userToHeadCreator$ = this.afs.collection('users').doc(conversa.userId).valueChanges();
+              this.conversa$ = conversa;
+              this.userToId = conversa.userToId;
+            }
           });
 
-        this.minhasPropostas$ = this.afs.collection('mensagens', ref => ref
-          .where('conversaId', '==', this.conversaId)
-          .where('userId', '==', this.user$.uid)
-          .where('valor', '>', 0)
-        ).valueChanges();
+          this.mensagensCol = this.afs.collection('mensagens', ref => ref
+            .where('conversaId', '==', this.conversaId)
+            .orderBy('createdAt')
+          );
+
+          this.mensagens$ = this.mensagensCol.snapshotChanges()
+            .map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+
+                data.user = this.afs.collection('users').doc(data.userId).valueChanges();
+
+                return { id, data };
+              });
+            });
+
+          this.minhasPropostas$ = this.afs.collection('mensagens', ref => ref
+            .where('conversaId', '==', this.conversaId)
+            .where('userId', '==', this.user$.uid)
+            .where('valor', '>', 0)
+          ).valueChanges();
+        });
       }
     });
   }
@@ -127,6 +134,10 @@ export class ConversaComponent implements OnInit, OnDestroy {
         this.form.reset();
       })
       .catch((error) => console.error('Error writing document: ', error));
+  }
+
+  updateStatus(status: number) {
+    this.perguntaDoc.update({ 'status': status });
   }
 
   ngOnDestroy() {

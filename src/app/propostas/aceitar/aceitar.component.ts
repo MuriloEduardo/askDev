@@ -64,7 +64,7 @@ export class AceitarComponent implements OnInit, OnDestroy {
       status: 1,
       propostaAceita: this.mensagemId
     }).then(res => {
-      this.router.navigate(['/propostas', 'pagamento', this.mensagemId]);
+      this.router.navigate(['/pagamentos', 'garantia', this.mensagemId]);
     })
     .catch(error => console.error(error));
   }

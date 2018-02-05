@@ -53,10 +53,7 @@
                             </small>
                           </li>
                         </ul>
-                        <div>{{ pergunta.userId }}</div>
-                        <div>{{ userId }}</div>
-                        <div>{{ pergunta.status }}</div>
-                        <div class="card float-left" *ngIf="(pergunta.status || userId !== pergunta.userId ? userCreator : userPropostaAceita) | async as user; else loading">
+                        <div class="card float-left" *ngIf="(userId !== pergunta.userId ? userCreator : userPropostaAceita) | async as user; else loading">
                           <div class="p-2 text-truncate">
                             <img [src]="user.photoURL" class="rounded mr-1" width="38" height="38" [alt]="user.displayName" [title]="user.displayName">
                             <small class="card-title text-truncate">{{ user.uid == userId ? 'Eu' : user.displayName }}</small>
@@ -69,15 +66,25 @@
                           <div *ngIf="minhasPropostas$ | async as minhasPropostas; else loading">
                             <div *ngIf="!pergunta.status">
                               <!-- Fazer / Melhorar uma Proposta -->
-                              <a class="btn btn-primary btn-block" [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]">{{ minhasPropostas.length ? 'Melhorar a Proposta' : 'Fazer uma Proposta' }}</a>
+                              <div class="form-group">
+                                <a class="btn btn-primary btn-block" [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]">{{ minhasPropostas.length ? 'Melhorar a Proposta' : 'Fazer uma Proposta' }}</a>
+                              </div>
                               <!-- Ir Para as Mensagens -->
-                              <a *ngIf="minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', minhasPropostas[0].conversaId]">Enviar Mensagem</a>
+                              <div class="form-group">
+                                <a *ngIf="minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', minhasPropostas[0].conversaId]">Enviar Mensagem</a>
+                              </div>
                               <a *ngIf="!minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]" [queryParams]="{ add: 1 }">Enviar Mensagem</a>
                             </div>
                             <div *ngIf="pergunta.status">
-                              <a class="btn btn-secondary btn-block" [routerLink]="['/conversas', propostaAceita$.conversaId]">Mensagens</a>
-                              <!-- Garantir Pagamento -->
-                              <a *ngIf="pergunta.userId == userId" class="btn btn-success btn-lg btn-block" [routerLink]="['/propostas', 'pagamento', pergunta.propostaAceita]">Garantir Pagamento</a>
+                              <div class="form-group">
+                                <a class="btn btn-secondary btn-block" [routerLink]="['/conversas', propostaAceita$.conversaId]">Mensagens</a>
+                              </div>
+                              <div *ngIf="pergunta.userId == userId">
+                                <!-- Garantir Pagamento -->
+                                <a *ngIf="pergunta.status === 1" class="btn btn-success btn-lg btn-block" [routerLink]="['/pagamentos', 'garantia', pergunta.propostaAceita]">Garantir Pagamento</a>
+                                <!-- Liberar Dinheiro -->
+                                <a *ngIf="pergunta.status === 2" class="btn btn-success btn-block" [routerLink]="['/pagamentos', 'garantia', pergunta.propostaAceita]">Liberar Dinheiro</a>
+                              </div>
                             </div>
                           </div>
                         </div>

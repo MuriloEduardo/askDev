@@ -40,6 +40,16 @@ const routes: Routes = [
         path: 'conversas',
         canActivate: [AuthGuard],
         loadChildren: './conversas/conversas.module#ConversasModule'
+      },
+      {
+        path: 'financas',
+        canActivate: [AuthGuard],
+        loadChildren: './financas/financas.module#FinancasModule'
+      },
+      {
+        path: 'pagamentos',
+        canActivate: [AuthGuard],
+        loadChildren: './pagamentos/pagamentos.module#PagamentosModule'
       }
     ]
   },

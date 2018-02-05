@@ -6,6 +6,7 @@
     </button>
     <div [ngbCollapse]="!isCollapsed" class="collapse navbar-collapse" id="navbarsPrimary">
       <ul class="navbar-nav mr-auto">
+        <!-- Perguntas -->
         <li class="nav-item dropdown dropdown-hover" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" ngbDropdown>
           <a class="nav-link dropdown-toggle" id="dropdownPerguntas" [routerLink]="['/perguntas']" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Perguntas</a>
           <div *ngIf="user$" class="dropdown-menu" aria-labelledby="dropdownPerguntas" ngbDropdownMenu>
@@ -13,11 +14,19 @@
             <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/perguntas']">Ajude Alguém</a>
           </div>
         </li>
+        <!-- Minhas Atividades -->
         <li *ngIf="user$" class="nav-item dropdown dropdown-hover" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" ngbDropdown>
           <a class="nav-link dropdown-toggle" id="dropdownAtividades" [routerLink]="['/atividades']" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Minhas Atividades</a>
           <div class="dropdown-menu" aria-labelledby="dropdownAtividades" ngbDropdownMenu>
             <a class="dropdown-item" [routerLinkActive]="['active']" [routerLink]="['/atividades', 'ajudante']">Minhas Ajudas</a>
             <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/atividades']">Minhas Perguntas</a>
+          </div>
+        </li>
+        <!-- Minhas Finanças -->
+        <li *ngIf="user$" class="nav-item dropdown dropdown-hover" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" ngbDropdown>
+          <a class="nav-link dropdown-toggle" id="dropdownFinancas" [routerLink]="['/financas']" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Minhas Finanças</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownFinancas" ngbDropdownMenu>
+            <a class="dropdown-item" [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active']" [routerLink]="['/financas']">Movimentação de Minha Conta</a>
           </div>
         </li>
       </ul>

@@ -4,8 +4,8 @@
       <div class="col">
         <h1>
           Aceitar a proposta de
-          <a *ngIf="mensagem$.user | async; let user" [routerLink]="['/user', mensagem$.userId]">{{ user.displayName }}</a>
-          por <span class="text-primary">{{ mensagem$.valor | currency:'BRL':'symbol' }}</span>?
+          <strong *ngIf="mensagem$.user | async; let user">{{ user.displayName }}</strong>
+          por <strong>{{ mensagem$.valor | currency:'BRL':'symbol' }}</strong>?
         </h1>
       </div>
     </div>

@@ -4,34 +4,26 @@
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-1">
-
-
-              <div *ngIf="pergunta.userId === user$.uid; then auth else noAuth"></div>
-              <ng-template #auth>
-                <a class="btn btn-secondary btn-block" [routerLink]="['/propostas', conversa.perguntaId]">
-                  <i class="fa fa-angle-left" aria-hidden="true"></i>
-                </a>
-              </ng-template>
-              <ng-template #noAuth>
-                <a class="btn btn-secondary btn-block" [routerLink]="['/perguntas', conversa.perguntaId, pergunta.titulo]">
-                  <i class="fa fa-angle-left" aria-hidden="true"></i>
-                </a>
-              </ng-template>
-
-
-
-
-
+            <a class="btn btn-secondary btn-block" [routerLink]="pergunta.userId === user$.uid ? ['/propostas', conversa.perguntaId] : ['/perguntas', conversa.perguntaId, pergunta.titulo]">
+              <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </a>
           </div>
           <div class="col-md-11">
             <h1>{{ pergunta.titulo }}</h1>
             <h6 class="mb-5">Mensagens com
-              <a href="#" *ngIf="user$.uid !== conversa.userToId ? (userToHead$ | async) : (userToHeadCreato| async); let userConversando">
+              <a href="#" *ngIf="user$.uid !== conversa.userToId ? (userToHead$ | async) : (userToHeadCreator$ | async); let userConversando">
                 <img [src]="userConversando.photoURL" class="rounded" width="24px" height="24px" [alt]="userConversando.displayName" [title]="userConversando.displayName">
                 <span>{{ userConversando.displayName }}</span>
               </a>
               <span>({{ (mensagens$ | async)?.length }})</span>
             </h6>
+          </div>
+        </div>
+        <div class="row mb-5">
+          <div class="col-md-3 offset-9">
+            <div class="form-group" *ngIf="pergunta.status === 2 && pergunta.userId === user$.uid">
+              <button (click)="updateStatus(4)" class="btn btn-block btn-success">Liberar Dinheiro</button>
+            </div>
           </div>
         </div>
         <div *ngIf="mensagens$ | async; let mensagens; else loading" class="overflow-y-scroll" style="max-height: 50%">
@@ -74,10 +66,10 @@
         <form role="form" [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-3">
           <div class="form-group mt-3" *ngIf="minhasPropostas$ | async; let minhasPropostas">
             <div class="row">
-              <div [ngClass]="{'col-md-8': user$.uid !== conversa.userToId,'col-md-12': user$.uid === conversa.userToId || pergunta$.status}">
+              <div [ngClass]="{'col-md-8': user$.uid !== conversa.userToId,'col-md-12': user$.uid === conversa.userToId || pergunta.status}">
                 <textarea class="form-control form-control-lg" rows="5" placeholder="Responder Mensagem" formControlName="body"></textarea>
               </div>
-              <div class="col-md-4" *ngIf="user$.uid !== conversa.userToId && !pergunta$.status">
+              <div class="col-md-4" *ngIf="user$.uid !== conversa.userToId && !pergunta.status">
                 <div class="card text-white bg-primary">
                   <div class="card-body">
                     <h5 class="card-title">
@@ -89,7 +81,7 @@
                         Você conhece todos os detalhes do projeto?
                       </ng-template>
                     </h5>
-                    <a [routerLink]="['/conversas', 'proposta', perguntaId, pergunta$.titulo]" class="btn btn-success btn-block btn-lg">{{ minhasPropostas.length ? 'Melhore a Sua Proposta' : 'Fazer Uma Proposta' }}</a>
+                    <a [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]" class="btn btn-success btn-block btn-lg">{{ minhasPropostas.length ? 'Melhore a Sua Proposta' : 'Fazer Uma Proposta' }}</a>
                   </div>
                 </div>
               </div>

@@ -86,6 +86,15 @@ export class PropostaComponent implements OnInit, OnDestroy {
     this.userToId = userToId;
   }
 
+  onValorLiquido() {
+    const value = this.form.value.valorLiquido;
+    const calcPercent = (10 / 100) * value;
+    this.form.patchValue({
+      comissao: calcPercent,
+      total: value + calcPercent
+    });
+  }
+
   onSubmit() {
 
     if (!this.add) {
