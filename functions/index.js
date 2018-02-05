@@ -10,7 +10,7 @@ express.application.prefix = express.Router.prefix = function (path, configure) 
   return router;
 };
 
-const mp = new MP ('5409116096828326', '9TtUxaqpZEZYtMrPrDtjuPUKCp6HGRPN');
+const mp = new MP (functions.config().mercadopago.client_id, functions.config().mercadopago.client_secret);
 
 const app = express();
 app.use(cors());
