@@ -3,25 +3,17 @@
     <div class="row">
       <div class="col-md-12">
         <form role="form" [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div *ngIf="auth.user | async; then authenticated">
-            <!-- template will replace this div -->
-          </div>
-          <!-- User logged in -->
-          <ng-template #authenticated>
-            <div *ngIf="auth.user | async as user">
-              <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" class="form-control form-control-lg" id="nome" formControlName="nome" [ngClass]="{'is-invalid': form.controls['nome'].invalid && form.controls['nome'].touched}">
-              </div>
-              <div class="form-group row">
-                <div class="col-md-3">
-                  <input type="submit" class="btn btn-primary btn-lg btn-block" value="Salvar">
-                </div>
-              </div>
-              <!-- <h3>Olá, {{ user.displayName }}!</h3>
-              <button (click)="auth.signOut()">Logout</button> -->
+          <div *ngIf="auth.user | async as user">
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control form-control-lg" id="nome" formControlName="nome" [ngClass]="{'is-invalid': form.controls['nome'].invalid && form.controls['nome'].touched}">
             </div>
-          </ng-template>
+            <div class="form-group row">
+              <div class="col-md-3">
+                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Salvar">
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>

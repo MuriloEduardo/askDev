@@ -1,10 +1,23 @@
 <div class="list-group" *ngIf="conversas$ | async; let conversas; else loading">
-  <a [routerLink]="['/conversas', conversa.id]" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let conversa of conversas">
-    <div *ngIf="conversa.data.user | async as user" class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1"><strong>{{ user.displayName }}</strong> te enviou uma mensagem</h5>
-      <small class="text-muted">{{ conversa.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+  <a
+    class="list-group-item lida-list border-left-0 border-right-0 border-top-0 rounded-0 pb-4 pt-4 list-group-item-action flex-column align-items-start"
+    *ngFor="let conversa of conversas"
+    (click)="conversaLida(conversa.id)"
+    [ngClass]="{'bg-light': !conversa.data.lida}"
+    [routerLink]="['/conversas', conversa.id]"
+  >
+    <div *ngIf="conversa.data.user | async as user" class="row">
+      <div class="col-md-9">
+        <h5 class="mb-1"><strong>{{ user.nome || user.displayName }}</strong> te enviou uma mensagem</h5>
+        <small class="text-muted" *ngIf="conversa.data.pergunta | async as pergunta">Em <strong>{{ pergunta.titulo | truncate:[100] }}</strong></small>
+      </div>
+      <div class="col-md-3 text-muted text-center">
+        <small>
+          <div>{{ conversa.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</div>
+          <i class="fa" aria-hidden="true" [ngClass]="{'fa-circle': !conversa.data.lida, 'fa-circle-o': conversa.data.lida}" ></i>
+        </small>
+      </div>
     </div>
-    <small class="text-muted" *ngIf="conversa.data.pergunta | async as pergunta">Em <strong>{{ pergunta.titulo }}</strong></small>
   </a>
   <div class="card card-body text-muted text-center" *ngIf="!conversas.length">
     <h1>Sem Resultados</h1>

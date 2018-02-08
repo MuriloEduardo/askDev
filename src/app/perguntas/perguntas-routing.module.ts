@@ -1,3 +1,4 @@
+import { EditarComponent } from './editar/editar.component';
 import { PerguntaComponent } from './pergunta/pergunta.component';
 import { ListarComponent } from './listar/listar.component';
 import { CriarComponent } from './criar/criar.component';
@@ -11,12 +12,16 @@ const routes: Routes = [
     component: PerguntasComponent,
     children: [
       {
-        path: ':perguntaId/:perguntaTitulo',
-        component: PerguntaComponent
-      },
-      {
         path: 'criar',
         component: CriarComponent
+      },
+      {
+        path: 'editar/:perguntaId',
+        component: EditarComponent
+      },
+      {
+        path: ':perguntaId/:perguntaTitulo',
+        component: PerguntaComponent
       },
       {
         path: '',

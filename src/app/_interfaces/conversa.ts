@@ -3,4 +3,6 @@ export interface Conversa {
     userToId: string;
     perguntaId: string;
     createdAt: any;
+    lida: boolean;
+    lidaAt: any;
   }

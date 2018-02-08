@@ -4,7 +4,7 @@
       <div class="col">
         <h1>
           Aceitar a proposta de
-          <strong *ngIf="mensagem$.user | async; let user">{{ user.displayName }}</strong>
+          <strong *ngIf="mensagem$.user | async; let user">{{ user.nome || user.displayName }}</strong>
           por <strong>{{ mensagem$.valor | currency:'BRL':'symbol' }}</strong>?
         </h1>
       </div>

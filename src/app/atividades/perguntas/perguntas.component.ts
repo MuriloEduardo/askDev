@@ -30,6 +30,7 @@ export class PerguntasComponent implements OnInit {
 
         this.perguntasCol = this.afs.collection('perguntas', ref => ref
           .where('userId', '==', this.user$.uid)
+          .orderBy('createdAt', 'desc')
         );
 
         this.perguntas$ = this.perguntasCol.snapshotChanges()

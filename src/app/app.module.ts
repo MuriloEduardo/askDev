@@ -1,3 +1,4 @@
+import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -32,7 +33,8 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot(),
     AppRoutingModule,
     AuthModule,
-    ConversasModule
+    ConversasModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

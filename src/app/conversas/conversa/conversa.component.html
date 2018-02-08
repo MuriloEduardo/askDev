@@ -12,8 +12,8 @@
             <h1>{{ pergunta.titulo }}</h1>
             <h6 class="mb-5">Mensagens com
               <a href="#" *ngIf="user$.uid !== conversa.userToId ? (userToHead$ | async) : (userToHeadCreator$ | async); let userConversando">
-                <img [src]="userConversando.photoURL" class="rounded" width="24px" height="24px" [alt]="userConversando.displayName" [title]="userConversando.displayName">
-                <span>{{ userConversando.displayName }}</span>
+                <img [src]="userConversando.photoURL" class="rounded" width="24px" height="24px" [alt]="userConversando.nome || userConversando.displayName" [title]="userConversando.nome || userConversando.displayName">
+                <span>{{ userConversando.nome || userConversando.displayName }}</span>
               </a>
               <span>({{ (mensagens$ | async)?.length }})</span>
             </h6>
@@ -31,14 +31,14 @@
             <div class="col-md-12" *ngIf="mensagem.data.user | async as user">
               <div class="row">
                 <div class="col-md-1" [ngClass]="{'order-12': user.uid == user$.uid}">
-                  <img [src]="user.photoURL" class="rounded img-fluid" [alt]="user.displayName" [title]="user.displayName">
+                  <img [src]="user.photoURL" class="rounded img-fluid" [alt]="user.nome || user.displayName" [title]="user.nome || user.displayName">
                 </div>
                 <div class="col-md-11">
                   <div class="card box-sh-1">
                     <div class="card-body">
                       <div class="row mb-2">
                         <div class="col-md-9">
-                          <small class="text-muted">{{ user.uid == user$.uid ? 'Eu' : user.displayName }}</small>
+                          <small class="text-muted">{{ user.uid == user$.uid ? 'Eu' : (user.nome || user.displayName) }}</small>
                         </div>
                         <div class="col-md-3 text-right">
                           <small>{{ mensagem.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
@@ -81,7 +81,7 @@
                         Você conhece todos os detalhes do projeto?
                       </ng-template>
                     </h5>
-                    <a [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]" class="btn btn-success btn-block btn-lg">{{ minhasPropostas.length ? 'Melhore a Sua Proposta' : 'Fazer Uma Proposta' }}</a>
+                    <a [routerLink]="['/conversas', perguntaId, pergunta.titulo]" class="btn btn-success btn-block btn-lg">{{ minhasPropostas.length ? 'Melhore sua Proposta' : 'Fazer uma Proposta' }}</a>
                   </div>
                 </div>
               </div>

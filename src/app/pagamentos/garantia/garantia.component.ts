@@ -99,7 +99,7 @@ export class GarantiaComponent implements OnInit, OnDestroy {
         'unit_price': this.mensagemFivePercent
       }],
       'payer': {
-        'name': this.user$.displayName,
+        'name': this.user$.nome || this.user$.displayName,
         'email': this.user$.email
       },
       'payment_methods': {

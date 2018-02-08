@@ -1,3 +1,16 @@
 .list-conversas > .dropdown-menu {
   min-width: 450px;
 }
+
+#dropdownUser,
+#dropdownConversas {
+  padding: 0.6em;
+  border: 0!important;
+}
+
+#dropdownConversas .fa-commenting {
+  font-size: 2.4rem;
+}
+.navbar-dark .navbar-nav .nav-item:last-child .nav-link {
+  padding-right: 0!important;
+}

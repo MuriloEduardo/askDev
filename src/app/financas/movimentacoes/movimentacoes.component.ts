@@ -1,3 +1,6 @@
+import { Movimentacao } from './../../_interfaces/movimentacao';
+import { Observable } from 'rxjs/Observable';
+import { Financas } from './../../_interfaces/financas';
 import { AuthService } from './../../auth/auth.service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,12 +19,10 @@ export class MovimentacoesComponent implements OnInit, OnDestroy {
 
   user$: User;
   subscription: Subscription;
-  subPerguntas: Subscription;
-  subMensagem: Subscription;
-  subUserTwo: Subscription;
   perguntasCol: AngularFirestoreCollection<Pergunta>;
-  userId = '0';
-  mensagens$: any[] = [];
+  financasCol: AngularFirestoreCollection<Financas>;
+  userId = null;
+  movimentacoes$: Observable<any>;
 
   constructor(
     private afs: AngularFirestore,
@@ -31,27 +32,34 @@ export class MovimentacoesComponent implements OnInit, OnDestroy {
     this.subscription = this.auth.user.subscribe(user => {
 
       if (user) {
+
         this.user$ = user;
         this.userId = this.user$.uid;
-      }
 
-      this.perguntasCol = this.afs.collection('perguntas', ref => ref
-        .where('userId', '==', this.userId)
-      );
+        this.financasCol = this.afs.doc('users/' + this.userId).collection('financas');
 
-      this.subPerguntas = this.perguntasCol.valueChanges().subscribe(perguntas => {
-        perguntas.map(pergunta => {
-          this.subMensagem = this.afs.doc('mensagens/' + pergunta.propostaAceita).valueChanges()
-            .subscribe(mensagem => {
-              this.subUserTwo = this.afs.doc('users/' + mensagem['userId']).valueChanges()
-                .subscribe(userTwo => {
-                  mensagem['pergunta'] = pergunta;
-                  mensagem['user'] = userTwo;
-                  this.mensagens$.push(mensagem);
+        this.financasCol.snapshotChanges()
+          .take(1)
+          .toPromise()
+          .then(snaps => {
+
+            if (snaps.length) {
+              this.movimentacoes$ = this.financasCol.doc(snaps[0].payload.doc.id)
+                .collection('movimentacoes').snapshotChanges()
+                .map(movimentacoes => {
+                  return movimentacoes.map(movimentacao => {
+
+                    const data = movimentacao.payload.doc.data();
+
+                    data.pergunta = this.afs.doc('perguntas/' + data.perguntaId).valueChanges();
+                    data.user = this.afs.doc('users/' + data.userId).valueChanges();
+
+                    return data;
+                  });
                 });
-            });
-        });
-      });
+            }
+          });
+      }
     });
   }
 

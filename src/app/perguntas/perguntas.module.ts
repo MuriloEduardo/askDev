@@ -1,3 +1,5 @@
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { SharedModule } from './../shared/shared.module';
 import { PerguntasService } from './perguntas.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -6,20 +8,25 @@ import { PerguntasRoutingModule } from './perguntas-routing.module';
 import { PerguntasComponent } from './perguntas.component';
 import { CriarComponent } from './criar/criar.component';
 import { DevsComponent } from './devs/devs.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ListarComponent } from './listar/listar.component';
 import { PerguntaComponent } from './pergunta/pergunta.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserComponent } from './criar/user/user.component';
 import { AuthModule } from '../auth/auth.module';
+import { EditarComponent } from './editar/editar.component';
+import { CancelarComponent } from './cancelar/cancelar.component';
 
 @NgModule({
   imports: [
     CommonModule,
     PerguntasRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    AuthModule
+    AuthModule,
+    SharedModule,
+    AngularMultiSelectModule
   ],
   declarations: [
     PerguntasComponent,
@@ -27,7 +34,9 @@ import { AuthModule } from '../auth/auth.module';
     DevsComponent,
     ListarComponent,
     PerguntaComponent,
-    UserComponent
+    UserComponent,
+    EditarComponent,
+    CancelarComponent
   ],
   providers: [
     PerguntasService

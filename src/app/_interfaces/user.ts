@@ -3,6 +3,6 @@ export interface User {
   email: string;
   photoURL?: string;
   displayName?: string;
-  nome?: string;
+  nome?: any;
   financasId?: string;
 }

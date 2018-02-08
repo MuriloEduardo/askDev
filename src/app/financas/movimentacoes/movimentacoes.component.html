@@ -2,8 +2,29 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1 class="text-muted">Movimentações em minha conta</h1>
-        <pre>{{ mensagens$ | json }}</pre>
+        <h1 class="text-muted mb-3">Movimentações em minha conta</h1>
+        <div class="table-responsive">
+          <table *ngIf="movimentacoes$ | async; let movimentacoes" class="table table-striped">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Pergunta</th>
+                <th>Tipo</th>
+                <th>Ajudante / Ajudado</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let movimentacao of movimentacoes" >
+                <td>{{ movimentacao.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                <td>{{ (movimentacao.pergunta | async)?.titulo }}</td>
+                <td>{{ movimentacao.tipo }}</td>
+                <td><div *ngIf="movimentacao.user | async; let movimentacaoUser">{{ movimentacaoUser?.nome || movimentacaoUser?.displayName }}</div></td>
+                <td>{{ movimentacao.valor | currency:'BRL':'symbol' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

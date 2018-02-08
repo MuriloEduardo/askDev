@@ -1,7 +1,7 @@
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { User } from './../../../_interfaces/user';
 import { AuthService } from './../../../auth/auth.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Conversa } from './../../../_interfaces/conversa';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,11 +14,13 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ListaComponent implements OnInit, OnDestroy {
 
+  @Output() naoLidas: EventEmitter<number> = new EventEmitter<number>();
   subscription: Subscription;
   conversasCol: AngularFirestoreCollection<Conversa>;
   conversas$: any;
   user$: User;
-  userId = '0';
+  userId = null;
+  naoLidas$ = 0;
 
   constructor(
     private afs: AngularFirestore,
@@ -41,6 +43,16 @@ export class ListaComponent implements OnInit, OnDestroy {
             const data = a.payload.doc.data();
             const id = a.payload.doc.id;
 
+            if (!data.lida) {
+              this.naoLidas$++;
+            } else {
+              if (this.naoLidas$) {
+                this.naoLidas$--;
+              }
+            }
+
+            this.naoLidas.emit(this.naoLidas$);
+
             data.user = this.afs.collection('users').doc(data.userId).valueChanges();
             data.pergunta = this.afs.collection('perguntas').doc(data.perguntaId).valueChanges();
 
@@ -48,6 +60,15 @@ export class ListaComponent implements OnInit, OnDestroy {
           });
         });
     });
+  }
+
+  private conversaLida(conversaId: string) {
+
+    this.afs.doc('conversas/' + conversaId).update({
+      lida: true,
+      lidaAt: new Date()
+    })
+      .catch(error => console.error('conversaLida', error));
   }
 
   ngOnInit() {

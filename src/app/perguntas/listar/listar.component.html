@@ -4,12 +4,12 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div [ngbCollapse]="!isCollapsed" class="collapse navbar-collapse" id="navbarsPerguntas">
-      <ul class="navbar-nav mr-auto navbar-firstlink-nopadding-left">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
+          <a class="nav-link pl-0" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="['/perguntas']">Ajude Alguém</a>
+          <a class="nav-link" [routerLink]="['/perguntas']">Encontre Perguntas</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
@@ -22,71 +22,58 @@
 </nav>
 <section class="mt-5 mb-5">
   <div class="container">
-    <div class="row">
+    <div class="row" *ngIf="perguntas$ | async; let perguntas; else loading">
       <div class="col-md-3">
       </div>
       <div class="col-md-9">
-        <div *ngIf="perguntas$ | async; else loading">
-          <div *ngFor="let pergunta of perguntas">
-            <div class="card mb-3 box-sh-1">
-              <div class="card-body">
+        <div class="row">
+          <div class="col-md-2 offset-md-10 text-right" *ngIf="perguntas.length">
+            <h4 class="mb-0">{{ perguntas.length | number }}</h4>
+            <small>pergunta{{ perguntas.length > 1 ? 's' : '' }}</small>
+          </div>
+        </div>
+        <ul class="list-group mt-4">
+          <li class="list-group-item border-left-0 border-right-0 border-top-0 rounded-0 pb-4 pt-4 mb-1" *ngFor="let pergunta of perguntas">
+            <div class="row">
+              <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-md-8">
-                        <div *ngIf="pergunta.data.userId === user$?.uid; then eMinha else nMinha"></div>
-                        <ng-template #nMinha>
-                          <a [routerLink]="['/perguntas', pergunta.id, pergunta.data.titulo]">
-                            <h4>{{ pergunta.data.titulo }}</h4>
-                          </a>
-                        </ng-template>
-                        <ng-template #eMinha>
-                          <a [routerLink]="['/propostas', pergunta.id]">
-                            <h4>{{ pergunta.data.titulo }}</h4>
-                          </a>
-                        </ng-template>
+                  <div class="col-md-9">
+                    <a [routerLink]="pergunta.data.userId !== user$?.uid ? ['/perguntas', pergunta.id, pergunta.data.titulo] : ['/propostas', pergunta.id]">
+                      <h4>{{ pergunta.data.titulo | truncate:[100] }}</h4>
+                    </a>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">
                         <small><strong>Propostas: </strong><span *ngIf="pergunta.data.propostas | async; let propostas; else loading">{{ propostas?.length }}</span></small>
+                      </li>
+                      <li class="list-inline-item">
                         <small><strong>Criado Em: </strong>{{ pergunta.data.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
-                      </div>
-                      <div class="col-md-4">
-                        <!-- Botoes -->
-                        <div *ngIf="pergunta.data.userId !== user$?.uid">
-                          <div *ngIf="(pergunta.data.minhasPropostas | async)?.length; then jaFizProp else nFizProp">
-                            <!-- ngTemplate -->
-                          </div>
-                          <ng-template #jaFizProp>
-                            <div *ngIf="pergunta.data.conversa | async; let conversa">
-                              <!-- Ir Para as Mensagens -->
-                              <a class="btn btn-success btn-block" [routerLink]="['/conversas', conversa[0]?.idConversa]">Ir Para as Mensagens</a>
-                            </div>
-                          </ng-template>
-                          <ng-template #nFizProp>
-                            <!-- Fazer uma Proposta -->
-                            <a class="btn btn-primary btn-block" [routerLink]="['/conversas', 'proposta', pergunta.id, pergunta.data.titulo]">{{ user$ ? 'Fazer uma Proposta' : 'Eu sei, posso ajudar!' }}</a>
-                          </ng-template>
-                        </div>
-                        <!-- Orcamento -->
-                        <h5 class="text-success text-center p-3">{{ pergunta.data.orcamento }}</h5>
-                      </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-3">
+                    <!-- Orcamento -->
+                    <div class="float-right text-center">
+                      <small>Orçamento Sugerido</small>
+                      <h5 class="text-success">{{ perguntasService.orcamentoArr[pergunta.data.orcamento] }}</h5>
                     </div>
-                    <!-- Body -->
-                    <p class="mt-3">{{ pergunta.data.body }}</p>
                   </div>
                 </div>
-                <!-- Usuario -->
-                <a *ngIf="pergunta.data.user | async as user" class="card float-left" [routerLink]="['/users', user.uid]">
-                  <div class="p-2 text-truncate">
-                    <img [src]="user.photoURL" class="rounded mr-1" width="28" height="28" [alt]="user.displayName" [title]="user.displayName">
-                    <small>{{ user.uid == user$?.uid ? 'Eu' : user.displayName }}</small>
-                  </div>
-                </a>
+                <!-- Body -->
+                <p class="mt-3">{{ pergunta.data.body | truncate:[200] }}</p>
               </div>
             </div>
-          </div>
-          <div class="card card-body text-muted text-center" *ngIf="!perguntas.length">
-            <h1>Sem Resultados</h1>
-            <i class="fa fa-3x fa-frown-o" aria-hidden="true"></i>
-          </div>
+            <!-- Usuario -->
+            <a *ngIf="pergunta.data.user | async as user" class="card float-left" [routerLink]="['/users', user.uid]">
+              <div class="p-2 text-truncate">
+                <img [src]="user.photoURL" class="rounded mr-1" width="28" height="28" [alt]="user.nome || user.displayName" [title]="user.nome || user.displayName">
+                <small>{{ user.uid == user$?.uid ? 'Eu' : user.nome || user.displayName }}</small>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <div class="card card-body text-muted text-center" *ngIf="!perguntas.length">
+          <h1>Sem Resultados</h1>
+          <i class="fa fa-3x fa-frown-o" aria-hidden="true"></i>
         </div>
         <ng-template #loading>
           <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-1">
-        <a class="btn btn-secondary btn-block" [routerLink]="['/atividades', 'perguntas']">
+        <a class="btn btn-secondary btn-block" [routerLink]="['/atividades']">
           <i class="fa fa-angle-left" aria-hidden="true"></i>
         </a>
       </div>
@@ -22,13 +22,13 @@
               <div class="row" *ngIf="conversa.data.user | async as user">
                 <div class="col-md-1">
                   <a [routerLink]="['/users', user.uid]">
-                    <img [src]="user.photoURL" class="rounded img-fluid" [alt]="user.displayName" [title]="user.displayName">
+                    <img [src]="user.photoURL" class="rounded img-fluid" [alt]="user.nome || user.displayName" [title]="user.nome || user.displayName">
                   </a>
                 </div>
                 <div class="col-md-11">
                   <div class="row">
                     <div class="col-md-9">
-                      <h5>{{ user.displayName }}</h5>
+                      <h5>{{ user.nome || user.displayName }}</h5>
                     </div>
                     <div class="col-md-3">
                       <h3 *ngIf="ultimaProposta(mensagens); let proposta" class="text-success">{{ proposta.dataMensagens.valor | currency:'BRL':'symbol' }}</h3>

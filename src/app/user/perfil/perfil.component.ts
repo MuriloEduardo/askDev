@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { User } from './../../_interfaces/user';
 import { AuthService } from './../../auth/auth.service';
@@ -20,6 +21,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
   user$: User;
 
   constructor(
+    private toastr: ToastrService,
     private auth: AuthService,
     private formBuilder: FormBuilder,
     private afs: AngularFirestore
@@ -30,7 +32,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
 
         this.user$ = user;
 
-        this.form.controls['nome'].patchValue(this.user$.displayName);
+        this.form.controls['nome'].patchValue(this.user$.nome || this.user$.displayName);
 
         this.userDoc = this.afs.collection('users').doc(this.user$.uid);
       }
@@ -46,9 +48,14 @@ export class PerfilComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.userDoc.update(
-      { displayName: this.form.value.nome }
-    );
+    this.userDoc.update({
+      nome: this.form.value.nome
+    })
+      .then(() => this.toastr.success('Perfil atualizado!', 'Uhuul!'))
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+        this.toastr.error('Algo deu errado!', 'Vish!');
+      });
   }
 
   ngOnDestroy() {

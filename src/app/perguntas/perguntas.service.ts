@@ -36,6 +36,12 @@ export class PerguntasService {
     }
   ];
 
+  orcamentoArr = [
+    'R$1,00 - 5,00',
+    'R$5,00 - 15,00',
+    'R$15,00 - 50,00'
+  ];
+
   constructor() { }
 
 }

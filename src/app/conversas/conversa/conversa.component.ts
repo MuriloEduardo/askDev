@@ -136,7 +136,7 @@ export class ConversaComponent implements OnInit, OnDestroy {
       .catch((error) => console.error('Error writing document: ', error));
   }
 
-  updateStatus(status: number) {
+  private updateStatus(status: number) {
     this.perguntaDoc.update({ 'status': status });
   }
 

@@ -1,108 +1,119 @@
 <section class="mt-5 mb-5" *ngIf="pergunta$ | async as pergunta; else loading">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-1" *ngIf="inputPerguntaId">
-            <a class="btn btn-secondary btn-block" [routerLink]="['/perguntas', perguntaId, pergunta.titulo]">
-              <i class="fa fa-angle-left" aria-hidden="true"></i>
-            </a>
-          </div>
-          <div class="col-md-11">
-            <h1 class="mb-5">{{ pergunta.titulo }}</h1>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <h1>{{ pergunta.titulo }}</h1>
         </div>
-        <div *ngIf="!pergunta.status">
-          <div *ngIf="propostas$ | async; let propostas; else loading">
-            <div class="row" *ngIf="!inputPerguntaId && propostas[0]?.userId == userId">
-              <div class="col-md-12">
-                <div class="card mb-4 box-sh-1 pl-3 pr-3 pt-2 pb-2">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <small class="text-uppercase">Sua Proposta</small>
-                      <h4 class="text-success font-weight-bold">{{ propostas[propostas.length - 1].valor | currency:'BRL':'symbol' }}</h4>
-                    </div>
-                    <div class="col-md-8">
-                      <small class="text-muted font-italic">{{ propostas[propostas.length - 1].body }}</small>
-                    </div>
+        <div class="col-md-2">
+          <a class="btn btn-success btn-block" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
+        </div>
+      </div>
+      <hr class="mb-4">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="row mb-3">
+            <!-- Mensagens -->
+            <div *ngIf="minhasPropostas$ | async as minhasPropostas" class="col-md-3">
+              <a *ngIf="minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', minhasPropostas[0].conversaId]">Ir para Mensagens</a>
+            </div>
+            <div *ngIf="pergunta.userId == userId" class="col-md-3">
+              <!-- Garantir Pagamento -->
+              <a *ngIf="pergunta.status === 1" class="btn btn-success btn-block" [routerLink]="['/pagamentos', 'garantia', pergunta.propostaAceita]">Garantir Pagamento</a>
+              <!-- Liberar Dinheiro -->
+              <a *ngIf="pergunta.status === 2" class="btn btn-success btn-block" [routerLink]="['/pagamentos', 'garantia', pergunta.propostaAceita]">Liberar Dinheiro</a>
+            </div>
+          </div>
+          <div *ngIf="!pergunta.status">
+            <div class="row">
+              <div class="col">
+                <article class="mb-3">{{ pergunta.body }}</article>
+                <div class="card float-right" *ngIf="(userId !== pergunta.userId ? userCreator : userPropostaAceita) | async as user; else loading">
+                  <div class="p-2 text-truncate">
+                    <img [src]="user.photoURL" class="rounded mr-1" width="38" height="38" [alt]="user.nome || user.displayName" [title]="user.nome || user.displayName">
+                    <small class="card-title text-truncate">{{ user.uid == userId ? 'Eu' : user.nome || user.displayName }}</small>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-md-9">
-                        <ul class="list-inline">
-                          <li class="list-inline-item">
-                            <small *ngIf="perguntasService.nameStatus[pergunta.status]; let nameStatus">
-                              <strong>Status: </strong>
-                              <span class="text-{{ nameStatus.class }}">{{ nameStatus.nome }}</span>
-                            </small>
-                          </li>
-                          <li class="list-inline-item">
-                            <small *ngIf="propostas$ | async; let propostas; else loading">
-                              <strong>Propostas: </strong>
-                              <span>{{ propostas?.length }}</span>
-                            </small>
-                          </li>
-                        </ul>
-                        <div class="card float-left" *ngIf="(userId !== pergunta.userId ? userCreator : userPropostaAceita) | async as user; else loading">
-                          <div class="p-2 text-truncate">
-                            <img [src]="user.photoURL" class="rounded mr-1" width="38" height="38" [alt]="user.displayName" [title]="user.displayName">
-                            <small class="card-title text-truncate">{{ user.uid == userId ? 'Eu' : user.displayName }}</small>
-                          </div>
-                        </div>
+            <hr class="mt-5 mb-5">
+            <div class="row mb-3">
+              <div class="col">
+                <h5>Descreva sua Proposta</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <form role="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                    <textarea autofocus class="form-control form-control-lg" rows="6" placeholder="Eu posso te ajudar!" formControlName="mensagem" [ngClass]="{'is-invalid': form.controls['mensagem'].invalid && form.controls['mensagem'].touched}"></textarea>
+                  </div>
+                  <div>
+                    <h5 class="mt-5 mb-3">Sua Proposta</h5>
+                    <div class="form-group row">
+                      <div class="col-md-4">
+                        <label for="valorLiquido">Valor líquido a cobrar</label>
+                        <input type="number" (input)="onValorLiquido()" class="form-control form-control-lg text-right" id="valorLiquido" formControlName="valorLiquido" [ngClass]="{'is-invalid': form.controls['valorLiquido'].invalid && form.controls['valorLiquido'].touched}">
                       </div>
-                      <div class="col-md-3">
-                        <!-- Botoes -->
-                        <div *ngIf="(pergunta.userId !== userId || pergunta.status) && !inputPerguntaId">
-                          <div *ngIf="minhasPropostas$ | async as minhasPropostas; else loading">
-                            <div *ngIf="!pergunta.status">
-                              <!-- Fazer / Melhorar uma Proposta -->
-                              <div class="form-group">
-                                <a class="btn btn-primary btn-block" [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]">{{ minhasPropostas.length ? 'Melhorar a Proposta' : 'Fazer uma Proposta' }}</a>
-                              </div>
-                              <!-- Ir Para as Mensagens -->
-                              <div class="form-group">
-                                <a *ngIf="minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', minhasPropostas[0].conversaId]">Enviar Mensagem</a>
-                              </div>
-                              <a *ngIf="!minhasPropostas.length" class="btn btn-secondary btn-block" [routerLink]="['/conversas', 'proposta', perguntaId, pergunta.titulo]" [queryParams]="{ add: 1 }">Enviar Mensagem</a>
-                            </div>
-                            <div *ngIf="pergunta.status">
-                              <div class="form-group">
-                                <a class="btn btn-secondary btn-block" [routerLink]="['/conversas', propostaAceita$.conversaId]">Mensagens</a>
-                              </div>
-                              <div *ngIf="pergunta.userId == userId">
-                                <!-- Garantir Pagamento -->
-                                <a *ngIf="pergunta.status === 1" class="btn btn-success btn-lg btn-block" [routerLink]="['/pagamentos', 'garantia', pergunta.propostaAceita]">Garantir Pagamento</a>
-                                <!-- Liberar Dinheiro -->
-                                <a *ngIf="pergunta.status === 2" class="btn btn-success btn-block" [routerLink]="['/pagamentos', 'garantia', pergunta.propostaAceita]">Liberar Dinheiro</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                      <div class="col-md-4">
+                        <label for="comissao">Comissão AskDev</label>
+                        <input type="number" [readonly]="true" class="form-control form-control-lg text-right" id="comissao" formControlName="comissao">
+                      </div>
+                      <div class="col-md-4">
+                        <label for="total">Total</label>
+                        <input type="number" [readonly]="true" class="form-control form-control-lg text-right" id="total" formControlName="total">
                       </div>
                     </div>
                   </div>
+                  <div class="form-group row mt-5">
+                    <div class="col-md-4">
+                      <input type="submit" class="btn btn-primary btn-lg btn-block" value="Enviar">
+                    </div>
+                    <div class="col-md-3">
+                      <a class="btn btn-secondary btn-block btn-lg" [routerLink]="['/perguntas']">Cancelar</a>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <ul class="list-unstyled">
+            <li>
+              <small *ngIf="perguntasService.nameStatus[pergunta.status]; let nameStatus">
+                <strong>Status: </strong>
+                <span class="text-{{ nameStatus.class }}">{{ nameStatus.nome }}</span>
+              </small>
+            </li>
+            <li>
+              <small *ngIf="propostas$ | async; let propostas">
+                <strong>Propostas: </strong>
+                <span>{{ propostas?.length }}</span>
+              </small>
+            </li>
+          </ul>
+          <div *ngIf="minhasPropostas$ | async; let minhasPropostas" class="mt-4">
+            <div *ngIf="!pergunta.status && minhasPropostas.length">
+              <div class="row">
+                <div class="col">
+                  <div class="card text-center">
+                    <div class="card-header bg-primary text-white">
+                      <h5>Melhore sua Proposta</h5>
+                    </div>
+                    <div class="card-body">
+                      <small class="text-uppercase">Sua Proposta</small>
+                      <h4 class="text-success font-weight-bold">{{ minhasPropostas[minhasPropostas.length - 1].valor | currency:'BRL':'symbol' }}</h4>
+                      <small class="text-muted font-italic">{{ minhasPropostas[minhasPropostas.length - 1].body | truncate:[200] }}</small>
+                    </div>
+                  </div>
                 </div>
-                <hr class="mt-5 mb-5">
-                <h5>Descrição</h5>
-                <p>{{ pergunta.body }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<ng-template #loading>
-  <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
-</ng-template>
+  </section>
+  <ng-template #loading>
+    <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+  </ng-template>

@@ -1,5 +1,6 @@
 export interface Proposta {
-  body: string;
+  body?: string;
   userId: string;
+  userToId: string;
   perguntaId: string;
 }

@@ -1,2 +1,7 @@
 @include media-breakpoint-down(xs) {
+
+  .collapse.navbar-collapse {
+    max-height: 250px;
+    overflow-y: scroll;
+  }
 }

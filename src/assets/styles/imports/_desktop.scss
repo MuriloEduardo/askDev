@@ -1,5 +1,7 @@
 @include media-breakpoint-up(md) {
-  .navbar-expand-md .navbar-nav .dropdown-menu-right {
+
+  .dropdown-menu-right {
     left: auto!important;
+    right: 0!important;
   }
 }

@@ -2,17 +2,28 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1 class="mb-5 text-muted">Minhas Perguntas <span *ngIf="perguntas$ | async; let propostas; else loading">({{ propostas.length }})</span></h1>
+        <h1 class="mb-5 display-4">Minhas Perguntas <span *ngIf="perguntas$ | async; let propostas">({{ propostas.length }})</span></h1>
         <div *ngIf="perguntas$ | async; let perguntas; else loading">
-          <ul class="list-group box-sh-1 mt-3">
-            <li class="list-group-item" *ngFor="let pergunta of perguntas">
+          <ul class="list-group mt-3">
+            <li class="list-group-item border-left-0 border-right-0 border-top-0 rounded-0 pb-4 pt-4 mb-1" *ngFor="let pergunta of perguntas; let i = index">
               <div class="row" *ngIf="perguntasService.nameStatus[pergunta.data.status]; let nameStatus">
-                <div class="col-md-1 text-center">
-                  <i class="align-middle fa-3x {{ nameStatus.icone + (' text-' + nameStatus.class) }}"></i>
+                <div class="col-md-1 my-auto text-center">
+                  <i class="fa-2x {{ nameStatus.icone + (' text-' + nameStatus.class) }}" aria-hidden="true"></i>
                 </div>
                 <div class="col-md-11">
-                  <a class="text-dark" [routerLink]="!pergunta.data.status ? ['/propostas', pergunta.id] : ['/perguntas', pergunta.id, pergunta.data.titulo]">
-                    <h5>{{ pergunta.data.titulo }}</h5>
+                  <!-- Opções -->
+                  <div class="dropdown float-right" ngbDropdown>
+                    <button type="button" class="btn btn-link text-muted dropdown-toggle pb-0" id="{{ 'dropdownOpcao' + i }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" attr.aria-labelledby="{{ 'dropdownOpcao' + i }}" ngbDropdownMenu>
+                      <a [routerLink]="['/perguntas', 'editar', pergunta.id]" class="btn btn-link dropdown-item">Editar</a>
+                      <div class="dropdown-divider"></div>
+                      <button class="btn btn-link dropdown-item text-danger">Cancelar Pergunta</button>
+                    </div>
+                  </div>
+                  <a [routerLink]="!pergunta.data.status ? ['/propostas', pergunta.id] : ['/perguntas', pergunta.id, pergunta.data.titulo]">
+                    <h5>{{ pergunta.data.titulo | truncate:[100] }}</h5>
                   </a>
                   <ul class="list-inline">
                     <li class="list-inline-item">
@@ -35,7 +46,7 @@
           </div>
         </div>
         <ng-template #loading>
-          <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+          <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw" aria-hidden="true"></i>
         </ng-template>
       </div>
     </div>

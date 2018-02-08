@@ -14,6 +14,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
 
   user$: User;
   subscription: Subscription;
+  naoLidas = 0;
 
   constructor(private auth: AuthService) {
     this.subscription = this.auth.user.subscribe(user => {
@@ -31,6 +32,10 @@ export class DefaultComponent implements OnInit, OnDestroy {
 
   logout() {
     this.auth.signOut();
+  }
+
+  onNaoLidas(event) {
+    this.naoLidas = event;
   }
 
 }

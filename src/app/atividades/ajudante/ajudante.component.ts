@@ -30,6 +30,7 @@ export class AjudanteComponent implements OnInit {
 
         this.conversasCol = this.afs.collection('conversas', ref => ref
           .where('userId', '==', this.user$.uid)
+          .orderBy('createdAt', 'desc')
         );
 
         this.conversas$ = this.conversasCol.snapshotChanges()

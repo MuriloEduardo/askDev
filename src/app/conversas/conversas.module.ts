@@ -1,8 +1,8 @@
+import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConversasRoutingModule } from './conversas-routing.module';
 import { ConversasComponent } from './conversas.component';
-import { PropostaComponent } from './proposta/proposta.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PerguntasModule } from '../perguntas/perguntas.module';
 import { ListarComponent } from './listar/listar.component';
@@ -14,11 +14,11 @@ import { ListaComponent } from './listar/lista/lista.component';
     CommonModule,
     ConversasRoutingModule,
     ReactiveFormsModule,
-    PerguntasModule
+    PerguntasModule,
+    SharedModule
   ],
   declarations: [
     ConversasComponent,
-    PropostaComponent,
     ListarComponent,
     ConversaComponent,
     ListaComponent

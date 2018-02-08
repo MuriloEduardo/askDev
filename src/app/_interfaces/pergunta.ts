@@ -8,4 +8,5 @@ export interface Pergunta {
   createdAt: any;
   status: number;
   propostaAceita: string;
+  categorias: any;
 }

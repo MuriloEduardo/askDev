@@ -4,12 +4,17 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarsPerguntas">
-      <ul class="navbar-nav mr-auto navbar-firstlink-nopadding-left">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="['/user']">Informações Pessoais</a>
+          <a class="nav-link pl-0" [routerLink]="['/user']">Informações Pessoais</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a class="nav-link" [routerLink]="['/user', 'senha']">Senha</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="btn btn-success" [routerLink]="['/perguntas', 'criar']">Criar Pergunta</a>
         </li>
       </ul>
     </div>

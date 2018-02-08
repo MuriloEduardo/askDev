@@ -11,6 +11,9 @@ express.application.prefix = express.Router.prefix = function (path, configure) 
 };
 
 const mp = new MP (functions.config().mercadopago.client_id, functions.config().mercadopago.client_secret);
+const access_tokenMP = mp.getAccessToken((err, accessToken) => {
+  return accessToken;
+});
 
 const app = express();
 app.use(cors());
@@ -27,6 +30,35 @@ app.prefix('/pagamentos', pagamentos => {
     mp.createPreference(req.body).then(data => {
       res.json(data);
     });
+  });
+
+  pagamentos.route('/clientes').post((req, res) => {
+    mp.post('/v1/customers', req.body).then(data => {
+      res.json(data);
+    })
+  });
+
+  pagamentos.route('/clientes/search/:email').get((req, res) => {
+    mp.get('/v1/customers/search', {
+      'email': req.params.email
+    }).then(data => {
+      res.json(data);
+    })
+  });
+
+  pagamentos.route('/clientes/:id/card').get((req, res) => {
+    mp.get('/v1/customers/search', {
+      'email': req.params.email
+    }).then(data => {
+      res.json(data);
+    })
+  });
+
+  pagamentos.route('/users/:user_id/balance').get((req, res) => {
+    mp.get ('/users/' + req.params.user_id + '/mercadopago_account/balance')
+      .then(data => {
+        res.json(data);
+      })
   });
 });
 

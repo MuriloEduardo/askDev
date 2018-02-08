@@ -1,14 +1,9 @@
 body {
-  padding-top: 3.5em;
-  background-color: $gray-lighter;
+  padding-top: 3.7em;
 }
 
 .dropdown-toggle::after {
   display: none;
-}
-
-.navbar-firstlink-nopadding-left .nav-item:first-child .nav-link {
-  padding-left: 0;
 }
 
 .dropdown-hover:hover>.dropdown-menu {
@@ -78,4 +73,35 @@ body {
 
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+
+.angular2-multiselect-dropdown .selected-list .c-btn {
+  padding: 0.7rem 1rem!important;
+  border-radius: 0.3rem!important;
+  box-shadow: none!important;
+  border-color: #ced4da!important;
+  color: #495057!important;
+}
+
+.angular2-multiselect-dropdown .list-area {
+  box-shadow: none!important;
+}
+
+.angular2-multiselect-dropdown .dropdown-list {
+  z-index: 999!important;
+  position: relative!important;
+}
+
+.angular2-multiselect-dropdown .fa-angle-down:before,
+.angular2-multiselect-dropdown .fa-angle-up:before {
+  content: '\f0dc';
+  font-size: 0.67em;
+}
+
+.position-absolute {
+  position: absolute!important;
+}
+
+.r-0 {
+  right: 0!important;
 }

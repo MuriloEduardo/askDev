@@ -110,6 +110,7 @@ export class AuthService {
     const data: User = {
       uid: user.uid,
       email: user.email,
+      nome: user.nome || null,
       displayName: displayName || user.displayName,
       photoURL: user.photoURL || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg'
     };
@@ -118,7 +119,7 @@ export class AuthService {
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['/auth']);
+      this.completeLogin('/auth');
     });
   }
 }

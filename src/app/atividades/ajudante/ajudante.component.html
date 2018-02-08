@@ -2,19 +2,29 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1 class="mb-5 text-muted">Minhas Ajudas <span *ngIf="conversas$ | async; let conversas; else loading">({{ conversas.length }})</span></h1>
+        <h1 class="display-4 mb-5">Minhas Ajudas <span *ngIf="conversas$ | async; let conversas">({{ conversas.length }})</span></h1>
         <div *ngIf="conversas$ | async; let conversas; else loading">
-          <ul class="list-group box-sh-1 mt-3">
-            <li class="list-group-item" *ngFor="let conversa of conversas">
+          <ul class="list-group mt-3">
+            <li class="list-group-item border-left-0 border-right-0 border-top-0 rounded-0 pb-4 pt-4 mb-1" *ngFor="let conversa of conversas">
               <div *ngIf="conversa.data.pergunta | async; let pergunta; else loading">
                 <div class="row" *ngIf="perguntasService.nameStatus[pergunta.status]; let nameStatus">
-                  <div class="col-md-1 text-center">
-                    <i class="align-middle fa-3x {{ nameStatus.icone + (' text-' + nameStatus.class) }}"></i>
+                  <div class="col-md-1 my-auto text-center">
+                    <i class="fa-2x {{ nameStatus.icone + (' text-' + nameStatus.class) }}" aria-hidden="true"></i>
                   </div>
                   <div class="col-md-11">
+                    <div class="dropdown float-right" ngbDropdown>
+                      <button type="button" class="btn btn-link text-muted dropdown-toggle pb-0" id="{{ 'dropdownOpcao' + i }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right" attr.aria-labelledby="{{ 'dropdownOpcao' + i }}" ngbDropdownMenu>
+                        <button class="btn btn-link dropdown-item">Editar</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="btn btn-link dropdown-item text-danger">Cancelar Pergunta</button>
+                      </div>
+                    </div>
                     <!-- Titulo Pergunta -->
-                    <a class="text-dark" [routerLink]="['/perguntas', conversa.data.perguntaId, pergunta.titulo]">
-                      <h5>{{ pergunta.titulo }}</h5>
+                    <a [routerLink]="['/perguntas', conversa.data.perguntaId, pergunta.titulo]">
+                      <h5>{{ pergunta.titulo | truncate:[100] }}</h5>
                     </a>
                     <ul class="list-inline">
                       <li class="list-inline-item">
@@ -38,8 +48,8 @@
                       <li class="list-inline-item">
                         <small>
                           <strong>Ajudado: </strong>
-                          <a class="text-dark" *ngIf="conversa.data.userTo | async as user" [routerLink]="['/users', user.uid]">
-                            {{ user.uid == user$.uid ? 'Eu' : user.displayName }}
+                          <a *ngIf="conversa.data.userTo | async as user" [routerLink]="['/users', user.uid]">
+                            {{ user.uid == user$.uid ? 'Eu' : (user.nome || user.displayName) }}
                           </a>
                         </small>
                       </li>
@@ -59,5 +69,5 @@
   </div>
 </section>
 <ng-template #loading>
-  <i class="fa fa-circle-o-notch text-muted fa-spin fa-fw"></i>
+  <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
 </ng-template>

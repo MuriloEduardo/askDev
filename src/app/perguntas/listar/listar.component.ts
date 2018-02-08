@@ -1,3 +1,4 @@
+import { PerguntasService } from './../perguntas.service';
 import { Observable } from 'rxjs/Observable';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { User } from './../../_interfaces/user';
@@ -18,13 +19,12 @@ export class ListarComponent implements OnInit, OnDestroy {
 
   user$: User;
   subscription: Subscription;
-  subPerguntas: Subscription;
   perguntasCol: AngularFirestoreCollection<Pergunta>;
   perguntas$: Observable<any>;
-  userId = '0';
-  perguntas: Pergunta[] = [];
+  userId = null;
 
   constructor(
+    private perguntasService: PerguntasService,
     private afs: AngularFirestore,
     private auth: AuthService
   ) {
@@ -36,11 +36,13 @@ export class ListarComponent implements OnInit, OnDestroy {
         this.userId = this.user$.uid;
       }
 
-      this.perguntasCol = this.afs.collection('perguntas');
+      this.perguntasCol = this.afs.collection('perguntas', ref => ref
+        .orderBy('createdAt', 'desc')
+      );
 
       this.perguntas$ = this.perguntasCol.snapshotChanges()
         .map(actions => {
-          return actions.map(a => {
+          const returnActions = actions.map(a => {
 
             const data = a.payload.doc.data();
             const id = a.payload.doc.id;
@@ -75,15 +77,14 @@ export class ListarComponent implements OnInit, OnDestroy {
 
             return { id, data };
           });
+          const returnReformedActions = [];
+          returnActions.forEach(returnAction => {
+            if (returnAction.data.userId !== this.userId && !returnAction.data.status) {
+              returnReformedActions.push(returnAction);
+            }
+          });
+          return returnReformedActions;
         });
-
-      this.subPerguntas = this.perguntas$.subscribe(perguntas => {
-        perguntas.map(pergunta => {
-          if (pergunta.data.userId !== this.userId && !pergunta.data.status) {
-            this.perguntas.push(pergunta);
-          }
-        });
-      });
     });
   }
 

@@ -1,3 +1,5 @@
+import { SharedModule } from './../shared/shared.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PerguntasService } from './../perguntas/perguntas.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,7 +12,9 @@ import { PerguntasComponent } from './perguntas/perguntas.component';
 @NgModule({
   imports: [
     CommonModule,
-    AtividadesRoutingModule
+    AtividadesRoutingModule,
+    NgbModule,
+    SharedModule
   ],
   declarations: [
     AtividadesComponent,
